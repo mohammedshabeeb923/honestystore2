@@ -4,6 +4,26 @@
 const fs = require('fs');
 const path = require('path');
 
+// Load .env
+try {
+  const envPath = path.join(__dirname, '..', '.env');
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, 'utf-8');
+    envContent.split(/\r?\n/).forEach(line => {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) return;
+      const match = trimmed.match(/^([\w.-]+)\s*=\s*(.*)?$/);
+      if (match) {
+        let val = (match[2] || '').trim();
+        if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+          val = val.slice(1, -1);
+        }
+        process.env[match[1]] = val;
+      }
+    });
+  }
+} catch (e) {}
+
 const serverSupabase = require('../server-supabase.js');
 
 async function testSupabase() {
