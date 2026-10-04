@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Honesty Store 2 - Autonomous Micro-Retail</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Honesty Store 2" />
+  <link rel="apple-touch-icon" href="assets/logo.jpg" />
+  <link rel="stylesheet" href="css/base.css?v=14.0" />
+  <link rel="stylesheet" href="css/customer.css?v=14.0" />
+  <link rel="stylesheet" href="css/admin.css?v=14.0" />
+  <!-- Supabase JS Client v2 SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- MASTER VIEW SWITCHER HEADER -->
+  <header class="master-header">
+    <div class="brand-badge">
+      <img src="assets/logo.jpg" alt="Honesty Store Logo" />
+      <span id="store-brand-title">HONESTY STORE 2</span>
+      <span style="font-size: 11px; font-weight: 500; background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 10px; margin-left: 6px;">
+        Production Platform
+      </span>
+    </div>
+
+    <!-- Mode Selector -->
+    <div class="view-mode-selector">
+      <button class="view-btn active" data-mode="customer" title="Show only Customer Mobile App">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+        Customer App
+      </button>
+      <button class="view-btn" data-mode="dual" title="Side-by-side Dual Mode">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="12" y1="3" x2="12" y2="21"></line></svg>
+        Dual View
+      </button>
+      <button class="view-btn" data-mode="admin" title="Show only Business Admin Console">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        Admin Console
+      </button>
+    </div>
+
+    <!-- Quick Utilities -->
+    <div class="quick-actions">
+      <button class="action-pill-btn" id="btn-reset-demo" title="Reset all data to exact screenshot defaults">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+        Reset State
+      </button>
+    </div>
+  </header>
+
+  <!-- MASTER STAGE -->
+  <main class="master-stage mode-customer" id="master-stage">
+
+    <!-- ============================================================ -->
+    <!-- 1. CUSTOMER MOBILE APP CONTAINER -->
+    <!-- ============================================================ -->
+    <div class="customer-wrapper">
+      <div class="mobile-device">
+
+        <!-- Mobile Header (Hidden on Splash) -->
+        <header class="mobile-app-header" id="mobile-app-header" style="display: none;">
+          <button class="header-btn" onclick="window.customerApp.switchScreen('screen-splash')" title="Home / Welcome">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="header-brand-title">
+            <img src="assets/logo.jpg" alt="Logo" />
+            <span>Honesty Store</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <button class="header-btn" id="btn-header-admin" title="Admin Portal" style="color: #64748b; background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </button>
+            <div class="header-avatar" title="Customer Profile" style="position: relative; width: 34px; height: 34px; cursor: pointer;">
+              <img src="assets/avatar.png" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+              <span id="auth-status-dot" style="position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-radius: 50%; background: #10b981; border: 2px solid #fff;" title="Verified Phone Login Active"></span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Mobile Scrollable Screen Area -->
+        <div class="mobile-content-area">
+
+          <!-- SCREEN 1: SPLASH / WELCOME SCREEN (Matches media_1788895479623.jpg) -->
+          <section class="customer-screen active" id="screen-splash">
+            <div class="splash-top">
+              <div class="splash-logo-card">
+                <img src="assets/logo.jpg" alt="Honesty Store Logo" />
+              </div>
+              <h1 class="splash-title">HONESTY STORE</h1>
+              <p class="splash-subtitle">Take what you need. Pay what you take.</p>
+            </div>
+
+            <!-- Wall Snack Shelf Hero Image -->
+            <div class="splash-shelf-container">
+              <img src="assets/shelf.png" alt="Honesty Store Shelf" class="splash-shelf-img" />
+            </div>
+
+            <!-- 4-Step Stepper Box -->
+            <div class="splash-stepper-card">
+              <div class="stepper-steps">
+                <div class="step-item" id="step-scan-shelf" style="cursor: pointer;" title="Scan Shelf QR">
+                  <div class="step-icon-circle">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="14" width="7" height="7"></rect>
+                      <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                  </div>
+                  <span class="step-label">SCAN</span>
+                </div>
+
+                <div class="step-item">
+                  <div class="step-icon-circle">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                      <line x1="3" y1="6" x2="21" y2="6"></line>
+                      <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                  </div>
+                  <span class="step-label">SELECT</span>
+                </div>
+
+                <div class="step-item">
+                  <div class="step-icon-circle">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  </div>
+                  <span class="step-label">PAY</span>
+                </div>
+
+                <div class="step-item">
+                  <div class="step-icon-circle">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+                      <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path>
+                      <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
+                      <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>
+                    </svg>
+                  </div>
+                  <span class="step-label">TAKE</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Enter Store Button -->
+            <div style="width: 100%;">
+              <button class="splash-btn-enter" id="btn-enter-store">
+                <span>→ ENTER STORE</span>
+              </button>
+              <div class="splash-footer-note">Simple, transparent, and built on trust.</div>
+              <div style="text-align: center; margin-top: 12px;">
+                <button type="button" id="btn-splash-admin" style="background: none; border: none; font-size: 11px; font-weight: 700; color: #94a3b8; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; padding: 6px;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  Store Owner Portal
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- SCREEN 2: CATALOG SCREEN (Matches media_1788895479627.jpg) -->
+          <section class="customer-screen" id="screen-catalog">
+            <div class="catalog-content">
+              <!-- Quote Banner -->
+              <p class="catalog-quote">"Good choices start with simple actions."</p>
+
+              <!-- Category Chips -->
+              <div class="category-chips-row">
+                <button class="category-chip active" data-category="All">All</button>
+                <button class="category-chip" data-category="Chips">Chips</button>
+                <button class="category-chip" data-category="Biscuits">Biscuits</button>
+                <button class="category-chip" data-category="Chocolates">Chocolates</button>
+                <button class="category-chip" data-category="Drinks">Drinks</button>
+              </div>
+
+              <!-- 2-Column Product Grid -->
+              <div class="products-grid" id="products-grid">
+                <!-- Injected dynamically via CustomerApp -->
+              </div>
+            </div>
+          </section>
+
+          <!-- SCREEN: YOUR CART (Matches media_1788895850090.jpg) -->
+          <section class="customer-screen" id="screen-cart">
+            <div class="cart-fullpage-content">
+              <div class="cart-page-header">
+                <button class="cart-back-btn" id="btn-cart-back">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                </button>
+                <div class="cart-brand-title">Honesty Store</div>
+                <div class="cart-avatar-wrap">
+                  <img src="assets/avatar.png" alt="Customer Avatar" />
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin: 18px 0 14px;">
+                <h2 class="cart-title-heading" style="margin: 0;">YOUR TRAY</h2>
+                <button type="button" onclick="window.clearTray()" style="background: #fff; border: 1px solid #fecaca; color: #dc2626; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  Empty Tray
+                </button>
+              </div>
+
+              <div class="cart-items-cards-list" id="cart-fullpage-items-list">
+                <!-- Injected dynamically via CustomerApp -->
+              </div>
+
+              <div class="cart-summary-divider"></div>
+
+              <div class="cart-summary-line">
+                <span>Subtotal</span>
+                <span id="cart-fullpage-subtotal">₹50</span>
+              </div>
+
+              <div class="cart-summary-line total">
+                <span>Total</span>
+                <span id="cart-fullpage-total">₹50</span>
+              </div>
+
+              <div class="cart-verification-notice">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>Your payment will be verified before your order is completed.</span>
+              </div>
+
+              <button class="cart-pay-btn-full" id="btn-cart-fullpage-pay">
+                PAY ₹50 →
+              </button>
+            </div>
+          </section>
+
+          <!-- SCREEN: PAYMENT VERIFIED (Matches media_1788895850084.jpg & media_1788895850091.jpg) -->
+          <section class="customer-screen" id="screen-verified">
+            <div class="verified-screen-content">
+              <div class="verified-icon-circle">
+                <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#0ca678" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+
+              <h2 class="verified-title">PAYMENT VERIFIED</h2>
+
+              <div class="verified-receipt-card">
+                <div class="verified-receipt-top">
+                  <div class="verified-meta-col">
+                    <h5>AMOUNT PAID</h5>
+                    <div class="amount-val" id="verified-amount-val">₹50</div>
+                  </div>
+                  <div class="verified-meta-col" style="text-align: right;">
+                    <h5>ORDER NO.</h5>
+                    <div class="order-no-val" id="verified-order-no">#HS10452</div>
+                  </div>
+                </div>
+
+                <div class="verified-card-divider"></div>
+
+                <div class="verified-items-label">ITEMS PURCHASED</div>
+                <div class="verified-items-list" id="verified-items-list-container">
+                  <div class="verified-item-row">
+                    <span>Lays</span>
+                    <span class="verified-item-qty">x1</span>
+                  </div>
+                  <div class="verified-item-row">
+                    <span>Oreo</span>
+                    <span class="verified-item-qty">x1</span>
+                  </div>
+                </div>
+              </div>
+
+              <p class="verified-trust-quote">
+                "Thank you for keeping our store honest. Your payment helps us keep the store running for everyone."
+              </p>
+
+              <button class="verified-btn-done" id="btn-verified-done">
+                DONE
+              </button>
+            </div>
+          </section>
+
+          <!-- SCREEN 3: MY ORDERS (Matches media_1788895479646.jpg top) -->
+          <section class="customer-screen" id="screen-orders">
+            <div class="orders-content">
+              <h2 class="section-page-title">MY ORDERS</h2>
+              <div class="orders-list" id="orders-history-list">
+                <!-- Injected dynamically via CustomerApp -->
+              </div>
+            </div>
+          </section>
+
+          <!-- SCREEN 4: OUR HONESTY (Matches media_1788895479646.jpg bottom) -->
+          <section class="customer-screen" id="screen-honesty">
+            <div class="honesty-content">
+              <div class="honesty-header-block">
+                <h2>OUR HONESTY</h2>
+                <p class="honesty-subtitle">Every payment helps keep the store available for everyone.</p>
+              </div>
+
+              <!-- Black Sales Hero Card -->
+              <div class="black-sales-card">
+                <div class="sales-card-title">COMMUNITY SALES TODAY</div>
+                <div class="sales-card-val" id="community-sales-today">₹1,620</div>
+              </div>
+
+              <!-- Two Stat Cards (Clean SVG Icons Matching media_1788895479646.jpg) -->
+              <div class="honesty-stats-grid">
+                <div class="honesty-stat-card">
+                  <div class="stat-icon-wrap" style="color: #0f172a; display: flex; justify-content: center;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                  </div>
+                  <div class="stat-card-val" id="community-visits-count">127</div>
+                  <div class="stat-card-label">STORE VISITS</div>
+                </div>
+                <div class="honesty-stat-card">
+                  <div class="stat-icon-wrap" style="color: #0ca678; display: flex; justify-content: center;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+                  </div>
+                  <div class="stat-card-val" id="community-payments-count">81</div>
+                  <div class="stat-card-label">COMPLETED PAYMENTS</div>
+                </div>
+              </div>
+
+              <!-- Mint Green Honesty Card -->
+              <div class="mint-honesty-card">
+                <div class="mint-card-icon" style="color: #0ca678; display: flex;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                </div>
+                <div class="mint-card-text">
+                  Thank you for honoring the honor code. Your integrity keeps this initiative running smoothly.
+                </div>
+              </div>
+
+              <!-- Honor Code Pledge Button -->
+              <button class="btn-pledge-action" id="btn-sign-pledge">
+                Sign Community Honor Code
+              </button>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Bottom Navigation Bar (Clean Minimalist Vector Icons) -->
+        <nav class="mobile-bottom-nav" id="mobile-bottom-nav" style="display: none;">
+          <button class="nav-tab-item active" data-target="screen-catalog">
+            <span class="nav-tab-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            </span>
+            <span class="nav-tab-label">Home</span>
+          </button>
+          <button class="nav-tab-item" data-target="cart">
+            <span class="nav-tab-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            </span>
+            <span class="nav-tab-label">Tray</span>
+            <span class="cart-nav-badge" id="cart-nav-badge" style="display: none;">0</span>
+          </button>
+          <button class="nav-tab-item" data-target="screen-orders">
+            <span class="nav-tab-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </span>
+            <span class="nav-tab-label">History</span>
+          </button>
+          <button class="nav-tab-item" data-target="screen-honesty">
+            <span class="nav-tab-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </span>
+            <span class="nav-tab-label">Community</span>
+          </button>
+        </nav>
+
+        <!-- CART DRAWER SHEET -->
+        <div class="cart-drawer-sheet" id="cart-drawer">
+          <div class="cart-drawer-header">
+            <div class="cart-drawer-title">Shopping Tray</div>
+            <button id="btn-close-cart" style="border:none; background:none; cursor:pointer; color:#64748b; display:flex;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+          <div class="cart-items-scroll" id="cart-items-list">
+            <!-- Dynamically populated -->
+          </div>
+          <div class="cart-total-row">
+            <span>Total Payable:</span>
+            <span id="cart-total-amount">₹0</span>
+          </div>
+          <button class="btn-pay-now" id="btn-pay-now">
+            Proceed to Checkout →
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 2. BUSINESS ADMIN CONSOLE (Matches media_1788895479631.jpg) -->
+    <!-- ============================================================ -->
+    <div class="admin-wrapper">
+
+      <!-- Left Navigation Sidebar (Clean Enterprise SVG Icons Matching media_1788895479631.jpg) -->
+      <aside class="admin-sidebar">
+        <div class="sidebar-title">Admin Console</div>
+        <ul class="sidebar-nav-list">
+          <li class="sidebar-nav-item" data-tab="dashboard">
+            <span class="sidebar-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            </span>
+            <span>Dashboard</span>
+          </li>
+          <li class="sidebar-nav-item active" data-tab="inventory">
+            <span class="sidebar-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            </span>
+            <span>Inventory</span>
+          </li>
+          <li class="sidebar-nav-item" data-tab="products">
+            <span class="sidebar-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            </span>
+            <span>Products</span>
+          </li>
+          <li class="sidebar-nav-item" data-tab="sales">
+            <span class="sidebar-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"></path><line x1="8" y1="7" x2="16" y2="7"></line><line x1="8" y1="11" x2="16" y2="11"></line><line x1="8" y1="15" x2="12" y2="15"></line></svg>
+            </span>
+            <span>Sales</span>
+          </li>
+          <li class="sidebar-nav-item" data-tab="users">
+            <span class="sidebar-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </span>
+            <span>Users</span>
+          </li>
+          <li class="sidebar-nav-item" data-tab="settings">
+            <span class="sidebar-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </span>
+            <span>Settings</span>
+          </li>
+        </ul>
+
+        <div class="sidebar-bottom-info">
+          <h5>Honesty Store Node</h5>
+          <p>Autonomous Retail System<br/>Floor 3 Innovation Hub</p>
+          <button id="btn-admin-logout" style="margin-top: 10px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; background: #fff; border: 1px solid #cbd5e1; padding: 7px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; color: #475569; cursor: pointer;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            Lock Admin Console
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Admin Content Area -->
+      <main class="admin-main">
+        <!-- Top Nav Bar -->
+        <header class="admin-top-nav">
+          <h2 class="admin-page-heading" id="admin-page-heading">INVENTORY</h2>
+          <div class="admin-header-actions">
+            <button class="action-pill-btn" id="btn-admin-switch-store" style="background:#fff; color:#0f172a; border:1px solid #cbd5e1; padding:7px 12px; font-weight:700; cursor:pointer;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:3px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+              Customer Store
+            </button>
+            <div class="admin-search-wrap">
+              <span class="admin-search-icon" style="display: flex;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              </span>
+              <input type="text" class="admin-search-input" id="admin-search-input" placeholder="Search products..." />
+            </div>
+            <button class="action-pill-btn" id="btn-open-add-product" style="background:#0f172a; color:#fff; border:none; padding:8px 14px; font-weight:600;">
+              + Add Product
+            </button>
+            <div style="cursor: pointer; display: flex; color: #64748b;" title="Notifications">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            </div>
+            <img src="assets/avatar.png" alt="Admin Profile" class="admin-profile-avatar" title="Logged in as Store Administrator" />
+          </div>
+        </header>
+
+        <!-- TAB 1: INVENTORY (Exact Match to Screenshot) -->
+        <section class="admin-tab-view active" id="admin-tab-inventory">
+          <div class="inventory-container">
+            
+            <!-- Left Column: Current Stock -->
+            <div class="inventory-left-col">
+              <h3 class="inventory-subheading">Current Stock</h3>
+              <div class="stock-items-list" id="admin-stock-items-list">
+                <!-- Dynamically populated with Lays, Oreo, Dairy Milk, etc. -->
+              </div>
+            </div>
+
+            <!-- Right Column: Detail View with Discrepancy Reconciliation -->
+            <div class="inventory-right-col">
+              <div class="inventory-detail-panel" id="admin-detail-panel">
+                <!-- Dynamically populated via AdminApp with Expected, Physical, Difference (-3 in red) -->
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- TAB 1b: PRODUCTS MANAGEMENT (Item #19-#26) -->
+        <section class="admin-tab-view" id="admin-tab-products">
+          <div class="products-tab-container">
+            <!-- Stats Bar -->
+            <div class="products-stats-row">
+              <div class="stat-pill-card">
+                <span class="stat-pill-label">Total Catalog</span>
+                <span class="stat-pill-val" id="stat-prod-total">0</span>
+              </div>
+              <div class="stat-pill-card success">
+                <span class="stat-pill-label">Active on Shelf</span>
+                <span class="stat-pill-val" id="stat-prod-active">0</span>
+              </div>
+              <div class="stat-pill-card warning">
+                <span class="stat-pill-label">Low Stock</span>
+                <span class="stat-pill-val" id="stat-prod-low">0</span>
+              </div>
+              <div class="stat-pill-card danger">
+                <span class="stat-pill-label">Archived / Hidden</span>
+                <span class="stat-pill-val" id="stat-prod-archived">0</span>
+              </div>
+            </div>
+
+            <!-- Table Card -->
+            <div class="admin-table-card" style="margin-top: 16px;">
+              <div class="products-table-header">
+                <div>
+                  <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #0f172a;">Product Catalog & Inventory</h3>
+                  <p style="margin: 2px 0 0 0; font-size: 12px; color: #64748b;">Manage shelf items, selling prices, photos, and availability.</p>
+                </div>
+                <div class="products-filter-actions">
+                  <select id="prod-filter-category" class="admin-select-pill">
+                    <option value="All">All Categories</option>
+                    <option value="Chips">Chips</option>
+                    <option value="Biscuits">Biscuits</option>
+                    <option value="Chocolates">Chocolates</option>
+                    <option value="Drinks">Drinks</option>
+                    <option value="Beverages">Beverages</option>
+                    <option value="Snacks">Snacks</option>
+                  </select>
+                  <select id="prod-filter-status" class="admin-select-pill">
+                    <option value="all">All Statuses</option>
+                    <option value="active">Active Only</option>
+                    <option value="archived">Archived Only</option>
+                  </select>
+                  <button class="action-pill-btn" onclick="window.adminApp.openProductModal()" style="background:#0f172a; color:#fff; border:none; padding:8px 14px; font-weight:700; display:flex; align-items:center; gap:6px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Add Product
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-responsive" style="margin-top: 14px; overflow-x: auto;">
+                <table class="data-table" id="admin-products-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 54px;">Photo</th>
+                      <th>Product Details</th>
+                      <th>Category</th>
+                      <th>Purchase Rate</th>
+                      <th>Selling Price</th>
+                      <th>Stock Units</th>
+                      <th>Status</th>
+                      <th style="text-align: right;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-products-tbody">
+                    <!-- Populated dynamically via AdminApp.renderProductsTab() -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 2: DASHBOARD (Matches media_1788895850088.jpg and media_1788895850087.jpg) -->
+        <section class="admin-tab-view" id="admin-tab-dashboard">
+          <div class="dashboard-view-toggles">
+            <button class="dashboard-toggle-btn active" data-subview="today" onclick="window.adminApp.setDashboardSubView('today')">
+              Today's Overview & Funnel
+            </button>
+            <button class="dashboard-toggle-btn" data-subview="30days" onclick="window.adminApp.setDashboardSubView('30days')">
+              30-Day Performance & States
+            </button>
+          </div>
+
+          <div id="dashboard-dynamic-content">
+            <!-- Dynamically populated by AdminApp.renderDashboard() -->
+          </div>
+        </section>
+
+        <!-- TAB 3: SALES & PAYMENT TRACKING -->
+        <section class="admin-tab-view" id="admin-tab-sales">
+          <div class="sales-tab-container">
+            <!-- Header bar with title and subnav -->
+            <div class="sales-tab-header">
+              <div>
+                <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #0f172a;">Sales, Payments & Item Analytics</h3>
+                <p style="margin: 3px 0 0 0; font-size: 12px; color: #64748b;">Authoritative financial reports, item-level audit trails, and daily settlement summaries.</p>
+              </div>
+              <div class="sales-subnav-row">
+                <button type="button" class="sales-subnav-btn active" data-subtab="overview">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                  Overview & Orders
+                </button>
+                <button type="button" class="sales-subnav-btn" data-subtab="daily">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Daily Report
+                </button>
+                <button type="button" class="sales-subnav-btn" data-subtab="products">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  Product Sales
+                </button>
+                <button type="button" class="sales-subnav-btn" data-subtab="categories">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                  Category Sales
+                </button>
+                <button type="button" class="sales-subnav-btn" data-subtab="payments">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                  Payment Audit
+                </button>
+              </div>
+            </div>
+
+            <!-- SUBTAB 1: OVERVIEW & TRANSACTIONS TABLE -->
+            <div class="sales-subtab-view active" id="sales-subtab-overview">
+              <!-- KPI Cards Row -->
+              <div class="sales-kpi-grid">
+                <div class="sales-kpi-card revenue">
+                  <div class="kpi-icon-row">
+                    <span class="kpi-label">Confirmed Revenue</span>
+                    <span class="kpi-badge success">PAID ONLY</span>
+                  </div>
+                  <div class="kpi-big-val" id="kpi-confirmed-revenue">₹0</div>
+                  <div class="kpi-foot-label">Excludes pending & failed orders</div>
+                </div>
+
+                <div class="sales-kpi-card orders">
+                  <div class="kpi-icon-row">
+                    <span class="kpi-label">Confirmed Orders</span>
+                    <span class="kpi-icon">📦</span>
+                  </div>
+                  <div class="kpi-big-val" id="kpi-confirmed-orders">0</div>
+                  <div class="kpi-foot-label" id="kpi-avg-order-val">Avg: ₹0 / order</div>
+                </div>
+
+                <div class="sales-kpi-card items">
+                  <div class="kpi-icon-row">
+                    <span class="kpi-label">Items Sold</span>
+                    <span class="kpi-icon">🏷️</span>
+                  </div>
+                  <div class="kpi-big-val" id="kpi-items-sold">0</div>
+                  <div class="kpi-foot-label">Total shelf units taken</div>
+                </div>
+
+                <div class="sales-kpi-card payments">
+                  <div class="kpi-icon-row">
+                    <span class="kpi-label">Payment Audits</span>
+                    <span class="kpi-icon">💳</span>
+                  </div>
+                  <div class="kpi-payments-breakdown">
+                    <span class="pay-stat success" title="Successful Payments"><strong id="kpi-pay-success">0</strong> Paid</span>
+                    <span class="pay-stat warning" title="Pending Payments"><strong id="kpi-pay-pending">0</strong> Pend</span>
+                    <span class="pay-stat danger" title="Failed / Dropped Payments"><strong id="kpi-pay-failed">0</strong> Fail</span>
+                  </div>
+                  <div class="kpi-foot-label" id="kpi-pay-rate">100% success rate</div>
+                </div>
+              </div>
+
+              <!-- Filter & Search Controls Card -->
+              <div class="admin-table-card" style="margin-top: 16px; padding: 14px 18px;">
+                <!-- Date Period Pills Row -->
+                <div class="sales-controls-top-row">
+                  <div class="date-pills-row">
+                    <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">Period:</span>
+                    <button type="button" class="date-pill-btn active" data-period="today">Today</button>
+                    <button type="button" class="date-pill-btn" data-period="yesterday">Yesterday</button>
+                    <button type="button" class="date-pill-btn" data-period="7days">Last 7 Days</button>
+                    <button type="button" class="date-pill-btn" data-period="month">This Month</button>
+                    <button type="button" class="date-pill-btn" data-period="custom">Custom Range</button>
+                  </div>
+
+                  <div class="sales-actions-right">
+                    <button type="button" class="action-pill-btn" id="btn-export-sales-csv" style="background:#fff; color:#0f172a; border:1px solid #cbd5e1; font-weight:700;">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      Export CSV
+                    </button>
+                    <button type="button" class="action-pill-btn" id="btn-refresh-sales" style="background:#0f172a; color:#fff; border:none; font-weight:700;">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                      Refresh
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Custom Date Range Row (Hidden by default, shown when custom selected) -->
+                <div class="custom-date-range-row" id="custom-date-range-row" style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #f1f5f9;">
+                  <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <label style="font-size: 12px; font-weight: 700; color: #475569;">From:</label>
+                    <input type="date" id="sales-custom-start" class="admin-input-field" style="padding: 6px 10px; font-size: 12px; width: 140px;" />
+                    <label style="font-size: 12px; font-weight: 700; color: #475569;">To:</label>
+                    <input type="date" id="sales-custom-end" class="admin-input-field" style="padding: 6px 10px; font-size: 12px; width: 140px;" />
+                    <button type="button" id="btn-apply-custom-dates" class="action-pill-btn" style="background:#0284c7; color:#fff; border:none; padding: 6px 14px; font-size: 12px; font-weight:700; cursor:pointer;">Apply Dates</button>
+                  </div>
+                </div>
+
+                <!-- Filter Inputs Row -->
+                <div class="sales-filters-row" style="margin-top: 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                  <div class="admin-search-wrap" style="flex: 2; min-width: 220px;">
+                    <span class="admin-search-icon" style="display:flex;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </span>
+                    <input type="text" class="admin-search-input" id="sales-search-input" placeholder="Search Order #, Customer, Phone, or Item..." style="font-size: 12px;" />
+                  </div>
+
+                  <select id="sales-filter-payment-status" class="admin-select-pill">
+                    <option value="ALL">All Payments</option>
+                    <option value="PAID">✓ Paid Only</option>
+                    <option value="PENDING">⏳ Pending Only</option>
+                    <option value="FAILED">✕ Failed Only</option>
+                  </select>
+
+                  <select id="sales-filter-order-status" class="admin-select-pill">
+                    <option value="ALL">All Order Statuses</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="PENDING">Pending</option>
+                    <option value="CANCELLED">Cancelled</option>
+                  </select>
+
+                  <select id="sales-filter-category" class="admin-select-pill">
+                    <option value="ALL">All Categories</option>
+                    <option value="Chips">Chips</option>
+                    <option value="Biscuits">Biscuits</option>
+                    <option value="Chocolates">Chocolates</option>
+                    <option value="Drinks">Drinks</option>
+                  </select>
+
+                  <select id="sales-filter-method" class="admin-select-pill">
+                    <option value="ALL">All Channels</option>
+                    <option value="Cashfree UPI">Cashfree UPI</option>
+                    <option value="UPI">UPI</option>
+                    <option value="Card">Card</option>
+                    <option value="Cash / Honor">Cash / Trust</option>
+                  </select>
+
+                  <button type="button" id="btn-clear-sales-filters" class="action-pill-btn" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; font-size:11px; padding:6px 10px; cursor:pointer;">
+                    Reset
+                  </button>
+                </div>
+              </div>
+
+              <!-- Transactions Table Card -->
+              <div class="admin-table-card" style="margin-top: 16px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+                  <h4 style="margin:0; font-size:15px; font-weight:800; color:#0f172a;">Orders & Transactions Log</h4>
+                  <span id="sales-orders-count-badge" style="font-size:12px; color:#64748b; font-weight:600;">Showing 0 orders</span>
+                </div>
+
+                <div class="table-responsive" style="overflow-x: auto;">
+                  <table class="data-table" id="sales-orders-table">
+                    <thead>
+                      <tr>
+                        <th>Order #</th>
+                        <th>Date & Time</th>
+                        <th>Customer</th>
+                        <th>Items Snapshot</th>
+                        <th>Amount</th>
+                        <th>Payment Status</th>
+                        <th>Order Status</th>
+                        <th>Method</th>
+                        <th style="text-align: right;">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="sales-table-body">
+                      <!-- Rendered dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- SUBTAB 2: DAILY REPORT -->
+            <div class="sales-subtab-view" id="sales-subtab-daily" style="display: none;">
+              <div class="daily-report-header-card" style="background: #fff; padding: 14px 18px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div class="daily-date-picker-wrap" style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 13px; font-weight: 700; color: #0f172a;">Settlement Date:</span>
+                  <button type="button" class="action-pill-btn" id="btn-daily-prev-day" title="Previous Day" style="padding: 6px 10px; background:#f1f5f9; border:1px solid #cbd5e1; cursor:pointer;">‹</button>
+                  <input type="date" id="daily-report-date-input" class="admin-input-field" style="padding: 6px 10px; font-size: 13px; font-weight: 700; width: 145px;" />
+                  <button type="button" class="action-pill-btn" id="btn-daily-next-day" title="Next Day" style="padding: 6px 10px; background:#f1f5f9; border:1px solid #cbd5e1; cursor:pointer;">›</button>
+                  <button type="button" class="action-pill-btn" id="btn-daily-today" style="background:#0f172a; color:#fff; border:none; padding: 6px 12px; font-size: 12px; font-weight:700; cursor:pointer;">Today</button>
+                </div>
+                <div class="daily-header-actions">
+                  <button type="button" class="action-pill-btn" onclick="window.print()" style="background:#fff; color:#0f172a; border:1px solid #cbd5e1; font-weight:700; cursor:pointer;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    Print Daily Report
+                  </button>
+                </div>
+              </div>
+
+              <!-- Daily Metric Cards -->
+              <div class="sales-kpi-grid" style="margin-top: 14px;">
+                <div class="sales-kpi-card">
+                  <span class="kpi-label">Gross Sales</span>
+                  <div class="kpi-big-val" id="daily-stat-gross">₹0</div>
+                  <div class="kpi-foot-label">Before discounts</div>
+                </div>
+                <div class="sales-kpi-card">
+                  <span class="kpi-label">Discounts</span>
+                  <div class="kpi-big-val" id="daily-stat-discounts" style="color: #64748b;">₹0</div>
+                  <div class="kpi-foot-label">Promotional & honor adjustments</div>
+                </div>
+                <div class="sales-kpi-card revenue">
+                  <span class="kpi-label">Net Confirmed Sales</span>
+                  <div class="kpi-big-val" id="daily-stat-net" style="color: #047857;">₹0</div>
+                  <div class="kpi-foot-label">Confirmed collected revenue</div>
+                </div>
+                <div class="sales-kpi-card orders">
+                  <span class="kpi-label">Orders Count</span>
+                  <div class="kpi-big-val" id="daily-stat-orders">0</div>
+                  <div class="kpi-foot-label">Purchases completed</div>
+                </div>
+                <div class="sales-kpi-card items">
+                  <span class="kpi-label">Units Taken</span>
+                  <div class="kpi-big-val" id="daily-stat-units">0</div>
+                  <div class="kpi-foot-label">Physical shelf inventory</div>
+                </div>
+              </div>
+
+              <!-- Two Column Split: Products Sold Today & Category / Payment Breakdown -->
+              <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 16px; margin-top: 16px;">
+                <!-- Left: Product Breakdown -->
+                <div class="admin-table-card">
+                  <h4 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 800; color: #0f172a;">Products Sold on this Date</h4>
+                  <div class="table-responsive">
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th>Product</th>
+                          <th>Category</th>
+                          <th>Units Sold</th>
+                          <th>Snapshot Price</th>
+                          <th>Gross Revenue</th>
+                        </tr>
+                      </thead>
+                      <tbody id="daily-products-tbody">
+                        <!-- Rendered dynamically -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Right: Category Breakdown & Payment Breakdown -->
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                  <div class="admin-table-card">
+                    <h4 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 800; color: #0f172a;">Category Breakdown</h4>
+                    <div class="table-responsive">
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>Category</th>
+                            <th>Units Sold</th>
+                            <th>Revenue</th>
+                            <th>Share %</th>
+                          </tr>
+                        </thead>
+                        <tbody id="daily-categories-tbody">
+                          <!-- Rendered dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="admin-table-card">
+                    <h4 style="margin: 0 0 10px 0; font-size: 15px; font-weight: 800; color: #0f172a;">Payment Channels</h4>
+                    <div id="daily-payments-breakdown-box" style="display: flex; flex-direction: column; gap: 8px;">
+                      <!-- Rendered dynamically -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Today's Transaction Records -->
+              <div class="admin-table-card" style="margin-top: 16px;">
+                <h4 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 800; color: #0f172a;">Transactions on Selected Date</h4>
+                <div class="table-responsive">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Order #</th>
+                        <th>Time</th>
+                        <th>Customer</th>
+                        <th>Items Snapshot</th>
+                        <th>Amount</th>
+                        <th>Payment Status</th>
+                        <th>Method</th>
+                        <th style="text-align: right;">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="daily-orders-tbody">
+                      <!-- Rendered dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- SUBTAB 3: PRODUCT SALES (ITEM-LEVEL) -->
+            <div class="sales-subtab-view" id="sales-subtab-products" style="display: none;">
+              <div class="admin-table-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                  <div>
+                    <h4 style="margin: 0; font-size: 16px; font-weight: 800; color: #0f172a;">Item-Level Sales & Inventory Traceability</h4>
+                    <p style="margin: 2px 0 0 0; font-size: 12px; color: #64748b;">Click "Who Took What" to trace every individual customer purchase of that product.</p>
+                  </div>
+                  <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" id="prod-sales-search-input" class="admin-input-field" placeholder="Filter product name..." style="font-size: 12px; width: 180px; padding: 7px 10px;" />
+                    <select id="prod-sales-cat-filter" class="admin-select-pill">
+                      <option value="ALL">All Categories</option>
+                      <option value="Chips">Chips</option>
+                      <option value="Biscuits">Biscuits</option>
+                      <option value="Chocolates">Chocolates</option>
+                      <option value="Drinks">Drinks</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="data-table" id="product-sales-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 50px;">Photo</th>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Selling Price</th>
+                        <th>Current Stock</th>
+                        <th>Units Sold</th>
+                        <th>Total Revenue</th>
+                        <th>Orders Count</th>
+                        <th style="text-align: right;">Traceability</th>
+                      </tr>
+                    </thead>
+                    <tbody id="product-sales-tbody">
+                      <!-- Rendered dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- SUBTAB 4: CATEGORY SALES -->
+            <div class="sales-subtab-view" id="sales-subtab-categories" style="display: none;">
+              <!-- 4 Category Cards -->
+              <div class="category-cards-grid" id="category-cards-grid">
+                <!-- Rendered dynamically for Chips, Biscuits, Chocolates, Drinks -->
+              </div>
+
+              <!-- Category Performance Comparison Table -->
+              <div class="admin-table-card" style="margin-top: 16px;">
+                <h4 style="margin: 0 0 12px 0; font-size: 16px; font-weight: 800; color: #0f172a;">Category Sales Comparison</h4>
+                <div class="table-responsive">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Category</th>
+                        <th>Units Sold</th>
+                        <th>Total Revenue</th>
+                        <th>Sales Share (%)</th>
+                        <th>Avg. Price per Unit</th>
+                      </tr>
+                    </thead>
+                    <tbody id="category-sales-tbody">
+                      <!-- Rendered dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- SUBTAB 5: PAYMENT AUDIT & GATEWAY TRACKING -->
+            <div class="sales-subtab-view" id="sales-subtab-payments" style="display: none;">
+              <div class="admin-table-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                  <div>
+                    <h4 style="margin: 0; font-size: 16px; font-weight: 800; color: #0f172a;">Payment Gateway Audit Log</h4>
+                    <p style="margin: 2px 0 0 0; font-size: 12px; color: #64748b;">Full audit record of Cashfree UPI and gateway payment attempts.</p>
+                  </div>
+                  <div style="display: flex; gap: 8px;">
+                    <select id="payments-filter-status" class="admin-select-pill">
+                      <option value="ALL">All Payment Statuses</option>
+                      <option value="PAID">PAID Only</option>
+                      <option value="PENDING">PENDING Only</option>
+                      <option value="FAILED">FAILED Only</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Gateway Reference</th>
+                        <th>Payment ID</th>
+                        <th>Store Order #</th>
+                        <th>Customer</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                        <th>Status</th>
+                        <th>Date & Time</th>
+                      </tr>
+                    </thead>
+                    <tbody id="payment-tracking-tbody">
+                      <!-- Rendered dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- TAB 4: USERS / ACTIVITY -->
+        <section class="admin-tab-view" id="admin-tab-users">
+          <div class="admin-table-card">
+            <h3>Visitor & Trust Telemetry</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Visitor ID</th>
+                  <th>Time</th>
+                  <th>Event</th>
+                  <th>Verification</th>
+                  <th>Cart Value</th>
+                </tr>
+              </thead>
+              <tbody id="users-activity-body">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TAB 5: SETTINGS -->
+        <section class="admin-tab-view" id="admin-tab-settings">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 1000px;">
+            <!-- Business Settings -->
+            <div class="admin-table-card">
+              <h3>Store Configuration & Honor System Rules</h3>
+              <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 16px;">
+                <div>
+                  <label style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px;">Store Name</label>
+                  <input type="text" id="cfg-store-name" value="Honesty Store 2" placeholder="e.g. Honesty Store 2" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;" />
+                </div>
+                <div>
+                  <label style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px;">Quote on Catalog Header</label>
+                  <input type="text" value='"Good choices start with simple actions."' style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;" />
+                </div>
+                <div>
+                  <label style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px;">Discrepancy Threshold</label>
+                  <input type="number" value="5" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Cloud & Payment Integrations Settings -->
+            <div class="admin-table-card">
+              <h3>Supabase & Cashfree Integrations</h3>
+              <p style="font-size: 12px; color: #64748b; margin-bottom: 14px;">Connect your live production database and payment gateway.</p>
+              
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">Supabase Project URL</label>
+                  <input type="text" id="cfg-supabase-url" placeholder="https://your-project-id.supabase.co" 
+                         style="width: 100%; padding: 9px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 12px;" />
+                </div>
+                <div>
+                  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">Supabase Anon Key</label>
+                  <input type="password" id="cfg-supabase-key" placeholder="Enter new project Supabase Anon Key" 
+                         style="width: 100%; padding: 9px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 12px;" />
+                </div>
+                <div>
+                  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">Cashfree App ID</label>
+                  <input type="text" id="cfg-cashfree-appid" placeholder="Enter Cashfree App ID" 
+                         style="width: 100%; padding: 9px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 12px;" />
+                </div>
+                <div>
+                  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">Cashfree Secret Key</label>
+                  <input type="password" id="cfg-cashfree-secret" placeholder="Enter Cashfree Secret Key (e.g. cfsk_ma_...)" 
+                         style="width: 100%; padding: 9px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 12px;" />
+                </div>
+                <div>
+                  <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">Cashfree Environment</label>
+                  <select id="cfg-cashfree-env" style="width: 100%; padding: 9px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 12px;">
+                    <option value="PRODUCTION" selected>PRODUCTION (Live UPI)</option>
+                    <option value="SANDBOX">SANDBOX (Test Mode)</option>
+                  </select>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                  <button type="button" onclick="window.testSupabaseConnection()" class="btn-adjust-stock" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; margin:0; padding:10px 16px; border-radius:10px; font-size:12px; font-weight:700;">
+                    Test Connection
+                  </button>
+                  <button type="button" onclick="window.AppConfig.saveLiveCredentials({
+                    supabaseUrl: document.getElementById('cfg-supabase-url').value,
+                    supabaseAnonKey: document.getElementById('cfg-supabase-key').value,
+                    cashfreeAppId: document.getElementById('cfg-cashfree-appid').value,
+                    cashfreeSecret: document.getElementById('cfg-cashfree-secret').value,
+                    cashfreeEnv: document.getElementById('cfg-cashfree-env').value
+                  })" class="btn-adjust-stock" style="background:#0f172a; color:#fff; border:none; margin:0; padding:10px 18px; border-radius:10px; font-size:12px; font-weight:700; flex:1;">
+                    Save & Connect
+                  </button>
+                </div>
+                <div id="supabase-test-feedback" style="font-size: 11px; margin-top: 4px; display: none;"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- MODALS -->
+  <!-- ============================================================ -->
+
+  <!-- 1. PAYMENT MODAL (UPI QR & TRUST PAY) -->
+  <div class="modal-overlay" id="payment-modal">
+    <div class="modal-dialog">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 class="modal-title" style="margin: 0;">Checkout Payment</h3>
+        <button class="btn-close-modal" style="border:none; background:none; cursor:pointer; color:#64748b; display:flex;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">
+        Total: <strong style="color: #0f172a; font-size: 18px;" id="pay-modal-amount">₹0</strong>
+      </p>
+
+      <!-- Simulated UPI QR Code -->
+      <div style="background: #f8fafc; border-radius: 14px; padding: 16px; text-align: center; border: 1px solid #e2e8f0; margin-bottom: 16px;">
+        <svg width="150" height="150" viewBox="0 0 100 100" style="margin: 0 auto; display: block;">
+          <!-- QR Pattern Mockup -->
+          <rect width="100" height="100" fill="#ffffff" rx="6"></rect>
+          <!-- Corner Position Boxes -->
+          <rect x="10" y="10" width="24" height="24" fill="#000000"></rect>
+          <rect x="14" y="14" width="16" height="16" fill="#ffffff"></rect>
+          <rect x="18" y="18" width="8" height="8" fill="#000000"></rect>
+
+          <rect x="66" y="10" width="24" height="24" fill="#000000"></rect>
+          <rect x="70" y="14" width="16" height="16" fill="#ffffff"></rect>
+          <rect x="74" y="18" width="8" height="8" fill="#000000"></rect>
+
+          <rect x="10" y="66" width="24" height="24" fill="#000000"></rect>
+          <rect x="14" y="70" width="16" height="16" fill="#ffffff"></rect>
+          <rect x="18" y="74" width="8" height="8" fill="#000000"></rect>
+
+          <!-- Middle Pattern Data -->
+          <rect x="42" y="12" width="6" height="6" fill="#000000"></rect>
+          <rect x="52" y="18" width="6" height="6" fill="#000000"></rect>
+          <rect x="42" y="30" width="16" height="6" fill="#000000"></rect>
+          <rect x="14" y="44" width="6" height="12" fill="#000000"></rect>
+          <rect x="28" y="42" width="12" height="6" fill="#000000"></rect>
+          <rect x="48" y="44" width="10" height="10" fill="#000000"></rect>
+          <rect x="66" y="42" width="12" height="6" fill="#000000"></rect>
+          <rect x="78" y="52" width="10" height="10" fill="#000000"></rect>
+          <rect x="42" y="64" width="8" height="8" fill="#000000"></rect>
+          <rect x="56" y="66" width="8" height="8" fill="#000000"></rect>
+          <rect x="72" y="74" width="16" height="6" fill="#000000"></rect>
+          <rect x="48" y="80" width="10" height="10" fill="#000000"></rect>
+        </svg>
+        <p style="font-size: 11px; font-weight: 700; color: #475569; margin-top: 8px;">Scan with Google Pay / PhonePe / Paytm</p>
+      </div>
+
+      <!-- Quick Payment Triggers -->
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button onclick="window.customerApp.confirmPayment('Cashfree UPI')" 
+                style="background: #0f172a; color:#fff; border:none; padding:12px; border-radius:12px; font-weight:700; cursor:pointer;">
+          Pay via Instant UPI
+        </button>
+        <button onclick="window.customerApp.confirmPayment('Cash Box')" 
+                style="background: #f1f5f9; color:#0f172a; border:1px solid #cbd5e1; padding:12px; border-radius:12px; font-weight:700; cursor:pointer;">
+          Cash Box Deposit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. PAYMENT CONFIRMATION SUCCESS MODAL -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal-dialog" style="text-align: center;">
+      <div style="width: 64px; height: 64px; border-radius: 50%; background: #e6fcf5; color: #0ca678; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0ca678" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h3 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Payment Confirmed</h3>
+      <p style="font-size: 14px; color: #059669; font-weight: 700;" id="success-order-amount">₹50</p>
+      <p style="font-size: 12px; color: #64748b; margin: 6px 0 16px;">Order Reference: <span id="success-order-id">HS10453</span></p>
+
+      <div style="background: #eafaf1; border: 1px solid #d3f3e1; border-radius: 12px; padding: 14px; margin-bottom: 20px;">
+        <p style="font-size: 13px; color: #2b8a3e; font-weight: 600;">
+          Please take your selected items from the shelf now.<br/>Thank you for your honesty.
+        </p>
+      </div>
+
+      <button class="btn-close-modal" onclick="window.customerApp.switchScreen('screen-orders')" 
+              style="background: #000; color: #fff; border:none; width:100%; padding: 12px; border-radius: 20px; font-weight: 700; cursor:pointer;">
+        View Order Receipt
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. ORDER RECEIPT MODAL -->
+  <div class="modal-overlay" id="receipt-modal">
+    <div class="modal-dialog">
+      <div style="display: flex; justify-content: flex-end;">
+        <button class="btn-close-modal" style="border:none; background:none; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <div id="receipt-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- 4. SHELF SCANNER MODAL -->
+  <div class="modal-overlay" id="scanner-modal">
+    <div class="modal-dialog" style="text-align: center; max-width: 400px; position: relative;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h3 class="modal-title" style="margin: 0; font-size: 18px;">Scan Store QR</h3>
+        <button class="btn-close-modal" id="btn-close-scanner" style="border:none; background:none; font-size:20px; color:#64748b; cursor:pointer; line-height: 1;">✕</button>
+      </div>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">
+        Point camera at the shelf barcode or QR badge
+      </p>
+      <div style="width: 100%; height: 210px; background: #0f172a; border-radius: 14px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin-bottom: 16px;">
+        <video id="scanner-video" playsinline autoplay muted style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;"></video>
+        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+          <div style="border: 2px dashed rgba(255,255,255,0.85); width: 130px; height: 130px; border-radius: 12px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.35); position: relative;">
+            <div class="scan-laser-line"></div>
+          </div>
+        </div>
+        <div id="scanner-fallback-msg" style="position: absolute; color: #94a3b8; font-size: 12px; display: none; padding: 12px; text-align: center;">
+          Camera preview unavailable.<br/>You can unlock directly below.
+        </div>
+      </div>
+      <button class="action-pill-btn" id="btn-simulate-shelf-scan" style="background:#0f172a; color:#fff; width:100%; padding:12px; justify-content:center; font-weight:700; border-radius:20px;">
+        ✓ Unlock Shelf & Enter Store
+      </button>
+    </div>
+  </div>
+
+  <!-- 5. ADJUST STOCK MODAL (Admin) -->
+  <div class="modal-overlay" id="adjust-stock-modal">
+    <div class="modal-dialog">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 class="modal-title" style="margin: 0;">Adjust Inventory Stock</h3>
+        <button class="btn-close-modal" style="border:none; background:none; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 14px;" id="adjust-modal-prod-name">Lays Classic</p>
+      <form id="adjust-stock-form" style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">New Stock Count</label>
+          <input type="number" id="adjust-stock-input" required min="0" style="width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:8px;" />
+        </div>
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Adjustment Reason / Audit Note</label>
+          <input type="text" id="adjust-stock-note" placeholder="e.g. Physical inventory audit / Restocked 20 units" style="width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:8px;" />
+        </div>
+        <button type="submit" class="btn-adjust-stock" style="background:#0f172a; color:#fff; border:none; margin:0;">
+          Save & Update Stock
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5B. PHYSICAL STOCK COUNT MODAL (Admin Quick Count) -->
+  <div class="modal-overlay" id="physical-stock-modal">
+    <div class="modal-dialog" style="max-width: 380px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 class="modal-title" style="margin: 0; font-size: 17px;">Physical Stock Count</h3>
+        <button class="btn-close-modal" id="btn-close-physical-stock" style="border:none; background:none; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 14px;" id="physical-stock-prod-name">Reconcile shelf inventory</p>
+      <form id="physical-stock-form" style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">ACTUAL SHELF UNITS COUNTED</label>
+          <input type="number" id="physical-stock-input" required min="0" style="width:100%; padding:11px 14px; border:1px solid #cbd5e1; border-radius:10px; font-size:16px; font-weight:700;" />
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button type="button" id="btn-cancel-physical-stock" style="flex:1; padding:11px; border:1px solid #e2e8f0; background:#f8fafc; border-radius:10px; font-weight:600; cursor:pointer;">Cancel</button>
+          <button type="submit" style="flex:1; padding:11px; border:none; background:#0f172a; color:#fff; border-radius:10px; font-weight:700; cursor:pointer;">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 6. PRODUCT EDITOR MODAL (Admin Add & Edit with Photo Upload) -->
+  <div class="modal-overlay" id="product-editor-modal">
+    <div class="modal-dialog" style="max-width: 520px; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          </div>
+          <h3 class="modal-title" id="prod-modal-title" style="margin: 0; font-size: 17px; font-weight: 800;">Add Shelf Product</h3>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-prod-modal" style="border:none; background:none; font-size:18px; cursor:pointer; color:#64748b;">✕</button>
+      </div>
+
+      <form id="product-editor-form" style="display: flex; flex-direction: column; gap: 14px;">
+        <input type="hidden" id="editor-prod-id" value="" />
+        <input type="hidden" id="editor-image-url" value="" />
+        <input type="hidden" id="editor-storage-path" value="" />
+
+        <!-- PHOTO UPLOAD & PREVIEW SECTION -->
+        <div class="product-photo-section">
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 6px;">Product Image</label>
+          <input type="file" id="prod-file-input" accept="image/jpeg,image/png,image/webp" style="display:none;" />
+
+          <!-- Dropzone / Empty State -->
+          <div id="photo-dropzone" class="photo-dropzone" onclick="document.getElementById('prod-file-input').click()">
+            <div class="photo-dropzone-inner">
+              <div class="photo-icon-wrap">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              </div>
+              <div style="font-weight: 700; font-size: 13px; color: #0f172a; margin-top: 6px;">Click or tap to upload photo</div>
+              <div style="font-size: 11px; color: #64748b; margin-top: 2px;">JPG, PNG, or WebP. Camera or gallery.</div>
+              <div style="font-size: 10px; color: #0284c7; background: #e0f2fe; padding: 2px 8px; border-radius: 999px; display: inline-block; margin-top: 6px; font-weight: 600;">Client auto-optimized &lt;150KB</div>
+            </div>
+          </div>
+
+          <!-- Active Image Preview Card -->
+          <div id="photo-preview-card" class="photo-preview-card" style="display: none;">
+            <div class="photo-preview-box">
+              <img id="photo-preview-img" src="assets/lays.jpg" alt="Preview" onerror="this.src='assets/lays.jpg';" />
+              <div id="photo-upload-spinner" class="photo-upload-spinner" style="display: none;">
+                <div class="mini-spinner"></div>
+                <span>Optimizing & Uploading...</span>
+              </div>
+            </div>
+            <div class="photo-preview-details">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span id="photo-status-badge" class="badge-tag success">Image Ready</span>
+                <span id="photo-size-badge" style="font-size: 11px; color: #64748b; font-weight: 600;"></span>
+              </div>
+              <p style="font-size: 11px; color: #64748b; margin: 4px 0 10px 0;">Stored securely in Supabase Storage</p>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-photo-action" onclick="document.getElementById('prod-file-input').click()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  Replace
+                </button>
+                <button type="button" class="btn-photo-action danger" id="btn-remove-photo">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT DETAILS -->
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">
+            Product Name <span style="color:#ef4444;">*</span>
+          </label>
+          <input type="text" id="editor-prod-name" placeholder="e.g. Lays, Oreo, Dairy Milk" required class="admin-input-field" />
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">Variant / Subtitle</label>
+            <input type="text" id="editor-prod-variant" placeholder="e.g. Classic Salted 52g" class="admin-input-field" />
+          </div>
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">Category <span style="color:#ef4444;">*</span></label>
+            <select id="editor-prod-category" required class="admin-input-field">
+              <option value="Chips">Chips</option>
+              <option value="Biscuits">Biscuits</option>
+              <option value="Chocolates">Chocolates</option>
+              <option value="Drinks">Drinks</option>
+              <option value="Beverages">Beverages</option>
+              <option value="Snacks">Snacks</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">
+            Packing Slip Reference Name (Accounting / Inventory Audit)
+          </label>
+          <input type="text" id="editor-prod-ref-name" placeholder="e.g. LAYS RS 5, OREO RS 10, MUNCH RS 10 [BOX]" class="admin-input-field" />
+          <div style="font-size: 11px; color: #64748b; margin-top: 3px;">Preserves the original supplier / physical packing slip reference.</div>
+        </div>
+
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">Description</label>
+          <textarea id="editor-prod-description" rows="2" placeholder="Optional notes, ingredients, or shelf location info..." class="admin-input-field" style="resize: vertical;"></textarea>
+        </div>
+
+        <!-- PRICING ROW: PURCHASE PRICE vs SELLING PRICE vs MRP -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
+          <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Pricing Configuration</div>
+          <div class="editor-pricing-grid" style="gap: 8px;">
+            <div>
+              <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">
+                Purchase Rate (₹)
+              </label>
+              <input type="number" id="editor-prod-purchase-price" placeholder="e.g. 4.38" min="0" step="0.01" class="admin-input-field" />
+              <div style="font-size: 10px; color: #64748b; margin-top: 2px;">Procurement cost</div>
+            </div>
+            <div>
+              <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">
+                MRP Rate (₹) <span style="color:#ef4444;">*</span>
+              </label>
+              <input type="number" id="editor-prod-price" value="10" required min="0.5" step="0.5" class="admin-input-field" />
+              <div style="font-size: 10px; color: #64748b; margin-top: 2px;">Printed pack MRP</div>
+            </div>
+            <div>
+              <label style="font-size: 11px; font-weight: 700; color: #0284c7; display: block; margin-bottom: 4px;">
+                Selling Price (₹)
+              </label>
+              <input type="number" id="editor-prod-selling-price" placeholder="Required for sale" min="0.5" step="0.5" class="admin-input-field" style="border-color: #38bdf8;" />
+              <div style="font-size: 10px; color: #0284c7; margin-top: 2px; font-weight: 600;">Customer App Rate</div>
+            </div>
+          </div>
+          <div style="font-size: 11px; color: #64748b; margin-top: 6px;">
+            ⚠️ Customer app uses <strong>Selling Price</strong>. If left blank, item will display "Price unavailable" to customers until set.
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">
+              Stock Units <span style="color:#ef4444;">*</span>
+            </label>
+            <input type="number" id="editor-prod-stock" value="15" required min="0" step="1" class="admin-input-field" />
+          </div>
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">Low Stock Alert</label>
+            <input type="number" id="editor-prod-threshold" value="5" min="1" step="1" class="admin-input-field" />
+          </div>
+        </div>
+
+        <!-- AVAILABILITY TOGGLE -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #0f172a;">Active on Customer Shelf</div>
+            <div style="font-size: 11px; color: #64748b;">When turned off, product is hidden from customer store without breaking receipts.</div>
+          </div>
+          <label class="switch-toggle">
+            <input type="checkbox" id="editor-prod-active" checked />
+            <span class="slider-round"></span>
+          </label>
+        </div>
+
+        <!-- MODAL ACTIONS -->
+        <div style="display: flex; gap: 10px; margin-top: 8px;">
+          <button type="button" class="btn-modal-cancel" id="btn-cancel-prod-modal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn-modal-submit" id="btn-save-prod-modal" style="flex:2;">
+            <span id="btn-save-prod-text">Save Product</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6b. QUICK ADD STOCK MODAL (Admin) -->
+  <div class="modal-overlay" id="quick-add-stock-modal">
+    <div class="modal-dialog" style="max-width: 380px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 class="modal-title" style="margin: 0; font-size: 17px;" id="add-stock-modal-title">Add Stock</h3>
+        <button type="button" class="btn-close-modal" id="btn-close-add-stock-modal" style="border:none; background:none; font-size:18px; cursor:pointer; color:#64748b;">✕</button>
+      </div>
+      <form id="quick-add-stock-form" style="display: flex; flex-direction: column; gap: 12px;">
+        <input type="hidden" id="add-stock-prod-id" value="" />
+        <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+          <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700;">Current Shelf Stock</div>
+          <div style="font-size: 20px; font-weight: 800; color: #0f172a;" id="add-stock-current-display">0 units</div>
+        </div>
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">UNITS TO ADD (+)</label>
+          <input type="number" id="add-stock-qty-input" required min="1" step="1" value="10" class="admin-input-field" style="font-size: 16px; font-weight: 700;" />
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button type="button" class="action-pill-btn" onclick="document.getElementById('add-stock-qty-input').value = 5" style="flex:1; padding:6px; font-size:12px;">+5</button>
+          <button type="button" class="action-pill-btn" onclick="document.getElementById('add-stock-qty-input').value = 10" style="flex:1; padding:6px; font-size:12px;">+10</button>
+          <button type="button" class="action-pill-btn" onclick="document.getElementById('add-stock-qty-input').value = 25" style="flex:1; padding:6px; font-size:12px;">+25</button>
+          <button type="button" class="action-pill-btn" onclick="document.getElementById('add-stock-qty-input').value = 50" style="flex:1; padding:6px; font-size:12px;">+50</button>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 6px;">
+          <button type="button" class="btn-modal-cancel" id="btn-cancel-add-stock-modal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn-modal-submit" style="flex:2;">Confirm Add Stock</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. GOOGLE AUTHENTICATION MODAL (Customer Login via Supabase) -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-dialog">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <h3 class="modal-title" style="margin: 0; font-size: 17px;">Customer Account</h3>
+        </div>
+        <button class="btn-close-modal" style="border:none; background:none; cursor:pointer; color:#64748b; display:flex;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- View 1: Customer Sign In / Sign Up (Compulsory Gmail & Phone) -->
+      <div id="auth-view-signin">
+        <div style="text-align: center; margin: 4px 0 16px;">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: #eff6ff; color: #2563eb; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; border: 1px solid #dbeafe;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+          <h4 style="font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 4px;">Sign In or Sign Up</h4>
+          <p style="font-size: 12px; color: #64748b; margin: 0; line-height: 1.45;">
+            Enter your <strong>Gmail Address</strong> and <strong>10-Digit Mobile Number</strong> (compulsory) to enter the store and track your orders.
+          </p>
+        </div>
+
+        <form id="customer-signin-form" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; text-align: left;">
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 5px;">
+              Gmail ID / Email Address <span style="color:#ef4444;">*</span>
+            </label>
+            <input type="email" 
+                   id="signin-customer-email" 
+                   placeholder="e.g. rahul@gmail.com" 
+                   required 
+                   class="admin-input-field" 
+                   style="width: 100%; box-sizing: border-box; padding: 11px 12px; font-size: 14px; border-radius: 12px; border: 1.5px solid #cbd5e1; outline: none; font-weight: 600;" />
+          </div>
+
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 5px;">
+              10-Digit Mobile Number <span style="color:#ef4444;">*</span>
+            </label>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="background: #f1f5f9; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 10px 12px; font-size: 13px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 4px; user-select: none;">
+                <span>🇮🇳</span>
+                <span>+91</span>
+              </div>
+              <input type="tel" 
+                     id="signin-customer-phone" 
+                     placeholder="e.g. 9876543210" 
+                     maxlength="10" 
+                     pattern="[6-9][0-9]{9}" 
+                     inputmode="numeric" 
+                     required 
+                     class="admin-input-field" 
+                     style="flex: 1; padding: 11px 12px; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; border-radius: 12px; border: 1.5px solid #cbd5e1; outline: none;" />
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 5px;">
+              Full Name <span style="font-size: 11px; font-weight: 500; color: #64748b;">(Optional - auto-filled from email)</span>
+            </label>
+            <input type="text" 
+                   id="signin-customer-name" 
+                   placeholder="e.g. Rahul Sharma" 
+                   class="admin-input-field" 
+                   style="width: 100%; box-sizing: border-box; padding: 11px 12px; font-size: 14px; border-radius: 12px; border: 1.5px solid #cbd5e1; outline: none; font-weight: 600;" />
+          </div>
+
+          <div id="login-error-msg" style="color: #ef4444; font-size: 11px; font-weight: 700; display: none; padding: 8px 10px; background: #fef2f2; border-radius: 8px; border: 1px solid #fee2e2; line-height: 1.4;"></div>
+
+          <button type="submit" id="btn-customer-signin-submit" style="width: 100%; background: #0f172a; color: #ffffff; border: none; padding: 13px; border-radius: 14px; font-size: 14px; font-weight: 800; cursor: pointer; transition: all 0.2s ease; margin-top: 4px;">
+            <span>Continue & Enter Store →</span>
+          </button>
+        </form>
+
+        <div style="display: flex; align-items: center; margin: 14px 0 12px; color: #94a3b8; font-size: 11px; font-weight: 700;">
+          <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
+          <span style="padding: 0 10px; letter-spacing: 0.5px;">OR AUTHENTICATE WITH GOOGLE</span>
+          <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
+        </div>
+
+        <button type="button" class="btn-google-auth" id="btn-google-signin" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; background: #ffffff; color: #1f2937; border: 1.5px solid #cbd5e1; padding: 11px 16px; border-radius: 14px; font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: all 0.2s ease;">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+          <span>Continue with Google</span>
+        </button>
+
+        <div style="background: #f8fafc; border-radius: 12px; padding: 10px 12px; border: 1px solid #e2e8f0; font-size: 11px; color: #64748b; line-height: 1.45; display: flex; align-items: flex-start; gap: 8px; margin-top: 14px; text-align: left;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" style="flex-shrink: 0; margin-top: 1px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div>
+            <strong>Verified Identity Required:</strong> Both Gmail and Phone are mandatory to protect store inventory, enable digital receipts, and track UPI payments.
+          </div>
+        </div>
+      </div>
+
+      <!-- View 2: Logged-in Profile View -->
+      <div id="auth-step-profile" style="display: none; text-align: center;">
+        <div style="position: relative; width: 64px; height: 64px; margin: 0 auto 12px;">
+          <img id="profile-modal-avatar" src="assets/avatar.png" alt="Profile" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0;" />
+          <span style="position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; border-radius: 50%; background: #10b981; border: 2px solid #fff;"></span>
+        </div>
+        <h4 style="font-size: 17px; font-weight: 800; color: #0f172a; margin-bottom: 2px;" id="profile-modal-name">Verified Shopper</h4>
+        <p style="font-size: 13px; color: #64748b; margin-bottom: 16px;" id="profile-modal-email">user@gmail.com</p>
+        
+        <div style="background: #f8fafc; border-radius: 12px; padding: 12px 14px; border: 1px solid #edf2f7; text-align: left; font-size: 12px; margin-bottom: 18px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color: #64748b;">Community Trust Score:</span>
+            <strong style="color: #0ca678; display: flex; align-items: center; gap: 4px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              100% (High Trust)
+            </strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color: #64748b;">Authentication:</span>
+            <strong style="color: #0f172a;">Google Account</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: #64748b;">Isolation Status:</span>
+            <strong style="color: #10b981;">Private RLS Active</strong>
+          </div>
+        </div>
+
+        <!-- Phone & Email Configuration for Cashfree & Receipts -->
+        <div style="background: #f8fafc; border-radius: 12px; padding: 12px 14px; border: 1px solid #edf2f7; text-align: left; margin-bottom: 18px; display: flex; flex-direction: column; gap: 12px;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label style="font-size: 12px; font-weight: 700; color: #334155; margin: 0;">
+                Mobile Number (Cashfree / UPI) <span style="color:#ef4444;">*</span>
+              </label>
+              <span id="profile-phone-status-badge" style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: #f1f5f9; color: #64748b;">Not set</span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <div style="background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; font-size: 13px; font-weight: 700; color: #334155; user-select: none;">
+                +91
+              </div>
+              <input type="tel" 
+                     id="profile-phone-input" 
+                     placeholder="Enter 10-digit number" 
+                     maxlength="10" 
+                     pattern="[6-9][0-9]{9}" 
+                     class="admin-input-field" 
+                     style="flex: 1; padding: 8px 10px; font-weight: 700; letter-spacing: 0.5px;" />
+              <button type="button" 
+                      id="btn-save-profile-phone" 
+                      style="background: #0f172a; color: #fff; border: none; padding: 9px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">
+                Save
+              </button>
+            </div>
+            <div id="profile-phone-msg" style="font-size: 11px; margin-top: 6px; display: none;"></div>
+          </div>
+
+          <div style="border-top: 1px solid #e2e8f0; padding-top: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label style="font-size: 12px; font-weight: 700; color: #334155; margin: 0;">
+                Email ID (Receipts & Tracking) <span style="color:#ef4444;">*</span>
+              </label>
+              <span id="profile-email-status-badge" style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: #f1f5f9; color: #64748b;">Not set</span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="email" 
+                     id="profile-email-input" 
+                     placeholder="Enter your email address" 
+                     class="admin-input-field" 
+                     style="flex: 1; padding: 8px 10px; font-weight: 600;" />
+              <button type="button" 
+                      id="btn-save-profile-email" 
+                      style="background: #0f172a; color: #fff; border: none; padding: 9px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">
+                Save
+              </button>
+            </div>
+            <div id="profile-email-msg" style="font-size: 11px; margin-top: 6px; display: none;"></div>
+          </div>
+        </div>
+
+        <button type="button" id="btn-auth-logout" style="width: 100%; background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; padding: 12px; border-radius: 14px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
+          Sign Out of Account
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 7b. CASHFREE MANDATORY CUSTOMER DETAILS (PHONE & EMAIL) COLLECTION MODAL -->
+  <div class="modal-overlay" id="phone-collection-modal">
+    <div class="modal-dialog" style="max-width: 420px; text-align: center;">
+      <div style="width: 52px; height: 52px; border-radius: 50%; background: #eff6ff; color: #2563eb; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px; border: 1px solid #dbeafe;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <h3 style="font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Customer Details Required</h3>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 18px; line-height: 1.45;">
+        Both <strong>Mobile Number</strong> and <strong>Email ID</strong> are compulsory for payment verification, instant UPI processing, and order receipt.
+      </p>
+
+      <form id="phone-collection-form" style="display: flex; flex-direction: column; gap: 14px; text-align: left;">
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 6px;">
+            10-Digit Mobile Number <span style="color:#ef4444;">*</span>
+          </label>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="background: #f1f5f9; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 11px 12px; font-size: 14px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 4px; user-select: none;">
+              <span>🇮🇳</span>
+              <span>+91</span>
+            </div>
+            <input type="tel" 
+                   id="checkout-phone-input" 
+                   placeholder="e.g. 9876543210" 
+                   maxlength="10" 
+                   pattern="[6-9][0-9]{9}" 
+                   inputmode="numeric" 
+                   required 
+                   class="admin-input-field" 
+                   style="font-size: 15px; font-weight: 700; letter-spacing: 0.5px; padding: 11px 12px;" />
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 6px;">
+            Email ID / Gmail Address <span style="color:#ef4444;">*</span>
+          </label>
+          <input type="email" 
+                 id="checkout-email-input" 
+                 placeholder="e.g. rahul@gmail.com" 
+                 required 
+                 class="admin-input-field" 
+                 style="font-size: 14px; font-weight: 600; padding: 11px 12px;" />
+        </div>
+
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 6px;">
+            Your Name <span style="font-size: 11px; font-weight: 500; color: #64748b;">(Optional - auto-filled from email)</span>
+          </label>
+          <input type="text" 
+                 id="checkout-name-input" 
+                 placeholder="e.g. Rahul Sharma" 
+                 class="admin-input-field" 
+                 style="font-size: 14px; font-weight: 600; padding: 11px 12px;" />
+        </div>
+
+        <div id="phone-collection-error" style="color: #ef4444; font-size: 11px; font-weight: 700; display: none; margin-top: 2px;"></div>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Saved securely on this device for fast 1-tap future checkouts.</span>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 4px;">
+          <button type="button" class="btn-modal-cancel" id="btn-cancel-phone-modal" style="flex: 1;">Cancel</button>
+          <button type="submit" class="btn-modal-submit" id="btn-submit-phone-modal" style="flex: 2; background: #000000;">
+            <span id="phone-modal-submit-text">Confirm & Pay →</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8. CASHFREE PAYMENT STATUS MODAL -->
+  <div class="modal-overlay" id="cashfree-gateway-modal">
+    <div class="modal-dialog" style="max-width: 420px; padding: 24px 20px; border-radius: 20px; text-align: center;">
+      <div style="width: 56px; height: 56px; border-radius: 50%; background: #f5f3ff; color: #7c3aed; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <h3 style="font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Cashfree Payment Gateway</h3>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 18px;">
+        Waiting for payment confirmation from bank...
+      </p>
+      <div style="background: #f8fafc; border-radius: 12px; padding: 14px; text-align: left; font-size: 13px; margin-bottom: 16px; border: 1px solid #e2e8f0;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span style="color:#64748b;">Order Reference:</span>
+          <strong id="cf-order-id-display">HS...</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color:#64748b;">Amount:</span>
+          <strong id="cf-amount-display" style="color: #0f172a;">₹0</strong>
+        </div>
+      </div>
+      <button class="btn-close-modal" style="width: 100%; background: #0f172a; color: #fff; border: none; padding: 12px; border-radius: 14px; font-weight: 700; cursor: pointer;">
+        Close
+      </button>
+    </div>
+  </div>
+
+  <!-- 8. ADMIN LOGIN MODAL -->
+  <div class="modal-overlay" id="admin-auth-modal">
+    <div class="modal-dialog">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <h3 class="modal-title" style="margin: 0; font-size: 17px;">Admin Console Access</h3>
+        </div>
+        <button class="btn-close-modal" style="border:none; background:none; cursor:pointer; color:#64748b; display:flex;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 18px; line-height: 1.45;">
+        The Business Console is restricted to authorized store administrators. Sign in with your authorized Google account to access admin management.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px;">
+        <button type="button" class="btn-google-auth" id="btn-admin-google-signin" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; background: #0f172a; color: #ffffff; border: none; padding: 13px 18px; border-radius: 14px; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 6px rgba(15,23,42,0.2); transition: all 0.2s ease;">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+          <span>Sign In as Admin with Google</span>
+        </button>
+      </div>
+
+      <div style="display: flex; align-items: center; margin: 14px 0; color: #94a3b8; font-size: 11px; font-weight: 700;">
+        <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
+        <span style="padding: 0 10px; letter-spacing: 0.5px;">OR AUTHORIZED EMAIL</span>
+        <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
+      </div>
+
+      <form id="admin-email-verify-form" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 5px;">
+            Authorized Admin Gmail
+          </label>
+          <input type="email" id="admin-verify-email-input" placeholder="Enter your authorized Gmail" required class="admin-input-field" style="width: 100%; box-sizing: border-box; padding: 11px 12px; font-size: 13px; border-radius: 12px; border: 1.5px solid #cbd5e1; outline: none;" />
+        </div>
+        <button type="submit" id="btn-verify-admin-email" style="width: 100%; background: #2563eb; color: #ffffff; border: none; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.2s ease;">
+          Verify & Access Admin Console
+        </button>
+      </form>
+
+      <div id="admin-login-error" style="color: #ef4444; font-size: 12px; font-weight: 700; display: none; margin-bottom: 14px; text-align: left; padding: 10px 12px; background: #fef2f2; border-radius: 8px; border: 1px solid #fee2e2; line-height: 1.4;">
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. ORDER DETAIL MODAL (#order-detail-modal) -->
+  <div class="modal-overlay" id="order-detail-modal">
+    <div class="modal-dialog" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div>
+            <h3 class="modal-title" id="order-modal-title" style="margin: 0; font-size: 17px; font-weight: 800;">Order Details</h3>
+            <span id="order-modal-timestamp" style="font-size: 11px; color: #64748b;">Created: -</span>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-order-modal" style="border:none; background:none; font-size:18px; cursor:pointer; color:#64748b;">✕</button>
+      </div>
+
+      <div id="order-detail-modal-body">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. PRODUCT BUYERS MODAL ("WHO TOOK WHAT") -->
+  <div class="modal-overlay" id="product-buyers-modal">
+    <div class="modal-dialog" style="max-width: 720px; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #fef3c7; color: #b45309; display: flex; align-items: center; justify-content: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <h3 class="modal-title" id="buyers-modal-prod-name" style="margin: 0; font-size: 17px; font-weight: 800;">Product Buyers History</h3>
+            <div style="font-size: 11px; color: #64748b;">Who took what: Customer purchases audit trail</div>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-buyers-modal" style="border:none; background:none; font-size:18px; cursor:pointer; color:#64748b;">✕</button>
+      </div>
+
+      <!-- Stat summary strip -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+        <div style="background: #f8fafc; padding: 12px 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
+          <div style="font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Confirmed Units Sold</div>
+          <div style="font-size: 20px; font-weight: 800; color: #0f172a;" id="buyers-modal-units">0 units</div>
+        </div>
+        <div style="background: #ecfdf5; padding: 12px 14px; border-radius: 10px; border: 1px solid #a7f3d0;">
+          <div style="font-size: 11px; color: #047857; font-weight: 700; text-transform: uppercase;">Total Confirmed Revenue</div>
+          <div style="font-size: 20px; font-weight: 800; color: #047857;" id="buyers-modal-revenue">₹0</div>
+        </div>
+      </div>
+
+      <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Order #</th>
+              <th>Quantity</th>
+              <th>Snapshot Price</th>
+              <th>Line Total</th>
+              <th>Date & Time</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="product-buyers-tbody">
+            <!-- Rendered dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <script>
+    // Global Toast Notification Utility
+    window.showToast = function(message, type = 'info', duration = 3500) {
+      try {
+        let container = document.getElementById('toast-container');
+        if (!container) {
+          container = document.createElement('div');
+          container.id = 'toast-container';
+          document.body.appendChild(container);
+        }
+        const toast = document.createElement('div');
+        toast.className = `toast-item toast-${type}`;
+        
+        let icon = 'ℹ️';
+        if (type === 'success') icon = '✓';
+        if (type === 'error') icon = '✕';
+
+        toast.innerHTML = `<span style="font-weight:800; font-size:15px;">${icon}</span><span style="flex:1;">${message}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.add('toast-leaving');
+          setTimeout(() => {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+          }, 260);
+        }, duration);
+      } catch (e) {
+        console.log(`[Toast ${type}]:`, message);
+      }
+    };
+
+    // Global Online / Offline Network Resilience Listeners
+    window.addEventListener('offline', () => {
+      window.showToast('You are offline. Showing cached catalog.', 'error', 4500);
+    });
+    window.addEventListener('online', () => {
+      window.showToast('Back online! Syncing latest store data...', 'success', 3000);
+      if (window.storeDB && typeof window.storeDB.syncWithServer === 'function') {
+        window.storeDB.syncWithServer();
+      }
+    });
+  </script>
+
+  <!-- Application Scripts with Correct Dependency Order & Cache-Busting -->
+  <script src="js/config.js?v=14.0"></script>
+  <script src="js/supabase-client.js?v=14.0"></script>
+  <script src="js/auth.js?v=14.0"></script>
+  <script src="js/store-db.js?v=14.0"></script>
+  <script src="js/cashfree-client.js?v=14.0"></script>
+  <script src="js/customer-app.js?v=14.0"></script>
+  <script src="js/admin-app.js?v=14.0"></script>
+  <script src="js/app.js?v=14.0"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then((reg) => {
+          console.log('[PWA] Service Worker registered:', reg.scope);
+          // Force update check on page load to bypass stale assets
+          if (reg.update) reg.update();
+        }).catch((err) => {
+          console.warn('[PWA] Service Worker registration failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

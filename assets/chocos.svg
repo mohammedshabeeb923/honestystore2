@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" rx="24" fill="#fefce8" />
+  <circle cx="100" cy="90" r="56" fill="#fef08a" />
+  <!-- Chocos Moon / Crescent and stars -->
+  <path d="M90 62 C75 62 62 75 62 90 C62 105 75 118 90 118 C82 110 82 90 90 62 Z" fill="#713f12" />
+  <path d="M120 70 L124 80 L134 82 L126 88 L128 98 L120 92 L112 98 L114 88 L106 82 L116 80 Z" fill="#854d0e" />
+  <circle cx="100" cy="104" r="8" fill="#a16207" />
+  <text x="100" y="80" font-family="system-ui, sans-serif" font-size="11" font-weight="900" fill="#a16207" text-anchor="middle">CHOCOS</text>
+  <!-- Text Label -->
+  <text x="100" y="152" font-family="system-ui, sans-serif" font-size="13" font-weight="800" fill="#713f12" text-anchor="middle">KELLOGGS CHOCOS</text>
+  <text x="100" y="168" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#854d0e" text-anchor="middle">Chocolate Cereal &amp; Snack</text>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" rx="24" fill="#fffbeb" />
+  <circle cx="100" cy="90" r="56" fill="#fde68a" />
+  <!-- Mango Drink bottle shape -->
+  <rect x="82" y="44" width="36" height="84" rx="10" fill="#f59e0b" />
+  <rect x="88" y="34" width="24" height="12" rx="4" fill="#d97706" />
+  <ellipse cx="100" cy="85" rx="14" ry="24" fill="#fbbf24" />
+  <path d="M100 50 Q108 58 100 66" stroke="#fff" stroke-width="2" fill="none" opacity="0.6" />
+  <!-- Leaf -->
+  <path d="M106 34 C116 26 128 32 126 40 C118 42 110 38 106 34 Z" fill="#16a34a" />
+  <!-- Text Label -->
+  <text x="100" y="152" font-family="system-ui, sans-serif" font-size="13" font-weight="800" fill="#92400e" text-anchor="middle">DAILEE MANGO</text>
+  <text x="100" y="168" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#b45309" text-anchor="middle">Refreshing Drink</text>
+</svg>

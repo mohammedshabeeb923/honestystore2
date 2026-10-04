@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Honesty Store - Official Campus Poster (A4)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================================
+       CSS RESET & SWISS EDITORIAL DESIGN SYSTEM
+       ========================================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --color-black: #111111;
+      --color-warm-white: #FAFAF7;
+      --color-accent-yellow: #F5C400;
+      --color-subtle-gray: #71717A;
+      --color-border-subtle: #E4E4E7;
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #E2E8F0;
+      font-family: var(--font-primary);
+      color: var(--color-black);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    /* Screen Toolbar */
+    .screen-toolbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 24px;
+      background: #FFFFFF;
+      padding: 10px 18px;
+      border-radius: 999px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid #CBD5E1;
+    }
+
+    .toolbar-info {
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .toolbar-btn {
+      background: var(--color-black);
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+
+    .toolbar-btn:hover {
+      background: #000000;
+    }
+
+    .toolbar-btn-secondary {
+      background: #F1F5F9;
+      color: #0F172A;
+      border: 1px solid #CBD5E1;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toolbar-btn-secondary:hover {
+      background: #E2E8F0;
+    }
+
+    /* =========================================================
+       A4 POSTER CANVAS (210mm x 297mm)
+       ========================================================= */
+    .poster-sheet {
+      width: 210mm;
+      height: 297mm;
+      max-width: 100%;
+      background-color: var(--color-warm-white);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14mm 16mm 10mm 16mm;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+
+    /* Print-Safe Outer Geometric Accent Frame */
+    .poster-outer-frame {
+      position: absolute;
+      top: 6mm;
+      left: 6mm;
+      right: 6mm;
+      bottom: 6mm;
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      pointer-events: none;
+    }
+
+    .poster-corner-mark {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-color: var(--color-accent-yellow);
+      border-style: solid;
+      pointer-events: none;
+    }
+    .poster-corner-tl { top: 6mm; left: 6mm; border-width: 2px 0 0 2px; }
+    .poster-corner-tr { top: 6mm; right: 6mm; border-width: 2px 2px 0 0; }
+    .poster-corner-bl { bottom: 6mm; left: 6mm; border-width: 0 0 2px 2px; }
+    .poster-corner-br { bottom: 6mm; right: 6mm; border-width: 0 2px 2px 0; }
+
+    /* =========================================================
+       SECTION 1: BRAND HEADER
+       ========================================================= */
+    .brand-header-section {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .sub-kicker {
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--color-subtle-gray);
+      margin-bottom: 3.5mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .sub-kicker::before,
+    .sub-kicker::after {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--color-border-subtle);
+    }
+
+    .brand-lockup {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 2mm;
+    }
+
+    .brand-emblem-wrap {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-titles {
+      text-align: left;
+      line-height: 0.88;
+    }
+
+    .brand-title-honesty {
+      font-size: 26pt;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--color-black);
+      display: block;
+    }
+
+    .brand-title-store {
+      font-size: 26pt;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--color-black);
+      display: block;
+    }
+
+    .tagline-container {
+      margin-top: 3.5mm;
+      padding-top: 3mm;
+      border-top: 1.5px solid var(--color-black);
+      display: inline-block;
+      width: 100%;
+    }
+
+    .main-tagline {
+      font-size: 15.5pt;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--color-black);
+      line-height: 1.25;
+    }
+
+    .secondary-tagline {
+      font-size: 8.5pt;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: var(--color-subtle-gray);
+      text-transform: uppercase;
+      margin-top: 1mm;
+    }
+
+    /* =========================================================
+       SECTION 2: PRIMARY HERO QR CODE
+       ========================================================= */
+    .hero-qr-section {
+      text-align: center;
+      margin: 3mm auto 3mm auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .scan-pay-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-black);
+      color: #FFFFFF;
+      padding: 5px 22px;
+      border-radius: 999px;
+      margin-bottom: 3.5mm;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .yellow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-accent-yellow);
+      display: inline-block;
+    }
+
+    .scan-pay-text {
+      font-size: 10pt;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    /* Premium QR Frame with Subtle Yellow Outer Accent */
+    .qr-frame-outer {
+      background: #FFFFFF;
+      padding: 3mm;
+      border-radius: 12px;
+      border: 1.5px solid var(--color-accent-yellow);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+      display: inline-block;
+      position: relative;
+    }
+
+    .qr-frame-inner {
+      border: 3.5px solid var(--color-black);
+      border-radius: 8px;
+      padding: 4mm;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qr-svg {
+      width: 78mm;
+      height: 78mm;
+      display: block;
+    }
+
+    .qr-instruction-title {
+      font-size: 12pt;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--color-black);
+      margin-top: 3.5mm;
+      line-height: 1.35;
+    }
+
+    .qr-url-badge {
+      display: inline-block;
+      margin-top: 1.5mm;
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--color-subtle-gray);
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       SECTION 3: INFORMATION SECTION (5 COLUMNS)
+       ========================================================= */
+    .info-features-section {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid var(--color-border-subtle);
+      border-bottom: 1px solid var(--color-border-subtle);
+      padding: 3.5mm 0;
+      margin: 1mm 0 2mm 0;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      text-align: center;
+    }
+
+    .feature-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .feature-icon-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .feature-label {
+      font-size: 6.8pt;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-black);
+      line-height: 1.25;
+      max-width: 90px;
+    }
+
+    /* =========================================================
+       SECTION 4: RESTRAINED YELLOW ACCENT BANNER
+       ========================================================= */
+    .brand-accent-banner {
+      background-color: var(--color-accent-yellow);
+      color: var(--color-black);
+      text-align: center;
+      padding: 3.2mm 8mm;
+      border-radius: 6px;
+      margin-bottom: 2.5mm;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 2px 6px rgba(245, 196, 0, 0.25);
+    }
+
+    .banner-statement {
+      font-size: 10.5pt;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       SECTION 5: SOPHISTICATED BLACK FOOTER
+       ========================================================= */
+    .poster-footer {
+      background-color: var(--color-black);
+      color: var(--color-warm-white);
+      text-align: center;
+      padding: 3.8mm 6mm;
+      border-radius: 6px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-text {
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--color-warm-white);
+    }
+
+    /* =========================================================
+       PRINT SPECIFIC STYLES (EXACT A4 300 DPI)
+       ========================================================= */
+    @media print {
+      body {
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .poster-sheet {
+        box-shadow: none !important;
+        margin: 0 !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Toolbar for Printing & Inspecting (hidden during actual print) -->
+  <div class="screen-toolbar no-print">
+    <div class="toolbar-info">
+      📄 <strong>Honesty Store Poster</strong> • A4 Portrait (210×297mm) • Print-Ready 300 DPI
+    </div>
+    <button class="toolbar-btn" onclick="window.print()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print / Save as PDF
+    </button>
+    <a href="/assets/exact-qr-bw.svg" download class="toolbar-btn-secondary">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download Vector QR
+    </a>
+  </div>
+
+  <!-- A4 POSTER SHEET -->
+  <main class="poster-sheet">
+
+    <!-- Geometric Border & Corner Registration Marks -->
+    <div class="poster-outer-frame"></div>
+    <div class="poster-corner-mark poster-corner-tl"></div>
+    <div class="poster-corner-mark poster-corner-tr"></div>
+    <div class="poster-corner-mark poster-corner-bl"></div>
+    <div class="poster-corner-mark poster-corner-br"></div>
+
+    <!-- 1. BRAND HEADER -->
+    <header class="brand-header-section">
+      <div class="sub-kicker">
+        Autonomous Campus Retail • Floor 3 Innovation Hub
+      </div>
+
+      <div class="brand-lockup">
+        <div class="brand-emblem-wrap">
+          <svg width="44" height="44" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Handle -->
+  <path d="M19 16V12C19 9.23858 21.2386 7 24 7C26.7614 7 29 9.23858 29 12V16" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <!-- Bag Body -->
+  <path d="M11 16H37L39.5 41H8.5L11 16Z" stroke="#111111" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Heart Intersect -->
+  <path d="M24 37L16 28C13.5 25.5 13.5 21.5 16 19C18.5 16.5 22.5 16.5 24 19.5C25.5 16.5 29.5 16.5 32 19C34.5 21.5 34.5 25.5 32 28L24 37Z" fill="#FAFAF7" stroke="#111111" stroke-width="3" stroke-linejoin="round"/>
+</svg>
+        </div>
+        <div class="brand-titles">
+          <span class="brand-title-honesty">HONESTY</span>
+          <span class="brand-title-store">STORE</span>
+        </div>
+      </div>
+
+      <div class="tagline-container">
+        <h1 class="main-tagline">“Take What You Need. Pay What You Can.”</h1>
+        <p class="secondary-tagline">Self-Service Micro-Store • Built Entirely on Trust</p>
+      </div>
+    </header>
+
+    <!-- 2. PRIMARY QR SECTION -->
+    <section class="hero-qr-section">
+      <div class="scan-pay-badge">
+        <span class="yellow-dot"></span>
+        <span class="scan-pay-text">SCAN &amp; PAY</span>
+      </div>
+
+      <div class="qr-frame-outer">
+        <div class="qr-frame-inner">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" class="qr-svg" shape-rendering="crispEdges">
+  <rect width="37" height="37" fill="#FFFFFF" />
+  <rect x="4" y="4" width="1" height="1" fill="#111111" />
+  <rect x="5" y="4" width="1" height="1" fill="#111111" />
+  <rect x="6" y="4" width="1" height="1" fill="#111111" />
+  <rect x="7" y="4" width="1" height="1" fill="#111111" />
+  <rect x="8" y="4" width="1" height="1" fill="#111111" />
+  <rect x="9" y="4" width="1" height="1" fill="#111111" />
+  <rect x="10" y="4" width="1" height="1" fill="#111111" />
+  <rect x="14" y="4" width="1" height="1" fill="#111111" />
+  <rect x="16" y="4" width="1" height="1" fill="#111111" />
+  <rect x="17" y="4" width="1" height="1" fill="#111111" />
+  <rect x="18" y="4" width="1" height="1" fill="#111111" />
+  <rect x="19" y="4" width="1" height="1" fill="#111111" />
+  <rect x="21" y="4" width="1" height="1" fill="#111111" />
+  <rect x="22" y="4" width="1" height="1" fill="#111111" />
+  <rect x="23" y="4" width="1" height="1" fill="#111111" />
+  <rect x="24" y="4" width="1" height="1" fill="#111111" />
+  <rect x="26" y="4" width="1" height="1" fill="#111111" />
+  <rect x="27" y="4" width="1" height="1" fill="#111111" />
+  <rect x="28" y="4" width="1" height="1" fill="#111111" />
+  <rect x="29" y="4" width="1" height="1" fill="#111111" />
+  <rect x="30" y="4" width="1" height="1" fill="#111111" />
+  <rect x="31" y="4" width="1" height="1" fill="#111111" />
+  <rect x="32" y="4" width="1" height="1" fill="#111111" />
+  <rect x="4" y="5" width="1" height="1" fill="#111111" />
+  <rect x="10" y="5" width="1" height="1" fill="#111111" />
+  <rect x="12" y="5" width="1" height="1" fill="#111111" />
+  <rect x="14" y="5" width="1" height="1" fill="#111111" />
+  <rect x="17" y="5" width="1" height="1" fill="#111111" />
+  <rect x="18" y="5" width="1" height="1" fill="#111111" />
+  <rect x="19" y="5" width="1" height="1" fill="#111111" />
+  <rect x="20" y="5" width="1" height="1" fill="#111111" />
+  <rect x="21" y="5" width="1" height="1" fill="#111111" />
+  <rect x="26" y="5" width="1" height="1" fill="#111111" />
+  <rect x="32" y="5" width="1" height="1" fill="#111111" />
+  <rect x="4" y="6" width="1" height="1" fill="#111111" />
+  <rect x="6" y="6" width="1" height="1" fill="#111111" />
+  <rect x="7" y="6" width="1" height="1" fill="#111111" />
+  <rect x="8" y="6" width="1" height="1" fill="#111111" />
+  <rect x="10" y="6" width="1" height="1" fill="#111111" />
+  <rect x="16" y="6" width="1" height="1" fill="#111111" />
+  <rect x="17" y="6" width="1" height="1" fill="#111111" />
+  <rect x="19" y="6" width="1" height="1" fill="#111111" />
+  <rect x="23" y="6" width="1" height="1" fill="#111111" />
+  <rect x="24" y="6" width="1" height="1" fill="#111111" />
+  <rect x="26" y="6" width="1" height="1" fill="#111111" />
+  <rect x="28" y="6" width="1" height="1" fill="#111111" />
+  <rect x="29" y="6" width="1" height="1" fill="#111111" />
+  <rect x="30" y="6" width="1" height="1" fill="#111111" />
+  <rect x="32" y="6" width="1" height="1" fill="#111111" />
+  <rect x="4" y="7" width="1" height="1" fill="#111111" />
+  <rect x="6" y="7" width="1" height="1" fill="#111111" />
+  <rect x="7" y="7" width="1" height="1" fill="#111111" />
+  <rect x="8" y="7" width="1" height="1" fill="#111111" />
+  <rect x="10" y="7" width="1" height="1" fill="#111111" />
+  <rect x="12" y="7" width="1" height="1" fill="#111111" />
+  <rect x="13" y="7" width="1" height="1" fill="#111111" />
+  <rect x="14" y="7" width="1" height="1" fill="#111111" />
+  <rect x="16" y="7" width="1" height="1" fill="#111111" />
+  <rect x="18" y="7" width="1" height="1" fill="#111111" />
+  <rect x="19" y="7" width="1" height="1" fill="#111111" />
+  <rect x="21" y="7" width="1" height="1" fill="#111111" />
+  <rect x="23" y="7" width="1" height="1" fill="#111111" />
+  <rect x="26" y="7" width="1" height="1" fill="#111111" />
+  <rect x="28" y="7" width="1" height="1" fill="#111111" />
+  <rect x="29" y="7" width="1" height="1" fill="#111111" />
+  <rect x="30" y="7" width="1" height="1" fill="#111111" />
+  <rect x="32" y="7" width="1" height="1" fill="#111111" />
+  <rect x="4" y="8" width="1" height="1" fill="#111111" />
+  <rect x="6" y="8" width="1" height="1" fill="#111111" />
+  <rect x="7" y="8" width="1" height="1" fill="#111111" />
+  <rect x="8" y="8" width="1" height="1" fill="#111111" />
+  <rect x="10" y="8" width="1" height="1" fill="#111111" />
+  <rect x="13" y="8" width="1" height="1" fill="#111111" />
+  <rect x="19" y="8" width="1" height="1" fill="#111111" />
+  <rect x="20" y="8" width="1" height="1" fill="#111111" />
+  <rect x="21" y="8" width="1" height="1" fill="#111111" />
+  <rect x="22" y="8" width="1" height="1" fill="#111111" />
+  <rect x="23" y="8" width="1" height="1" fill="#111111" />
+  <rect x="26" y="8" width="1" height="1" fill="#111111" />
+  <rect x="28" y="8" width="1" height="1" fill="#111111" />
+  <rect x="29" y="8" width="1" height="1" fill="#111111" />
+  <rect x="30" y="8" width="1" height="1" fill="#111111" />
+  <rect x="32" y="8" width="1" height="1" fill="#111111" />
+  <rect x="4" y="9" width="1" height="1" fill="#111111" />
+  <rect x="10" y="9" width="1" height="1" fill="#111111" />
+  <rect x="12" y="9" width="1" height="1" fill="#111111" />
+  <rect x="13" y="9" width="1" height="1" fill="#111111" />
+  <rect x="15" y="9" width="1" height="1" fill="#111111" />
+  <rect x="16" y="9" width="1" height="1" fill="#111111" />
+  <rect x="21" y="9" width="1" height="1" fill="#111111" />
+  <rect x="24" y="9" width="1" height="1" fill="#111111" />
+  <rect x="26" y="9" width="1" height="1" fill="#111111" />
+  <rect x="32" y="9" width="1" height="1" fill="#111111" />
+  <rect x="4" y="10" width="1" height="1" fill="#111111" />
+  <rect x="5" y="10" width="1" height="1" fill="#111111" />
+  <rect x="6" y="10" width="1" height="1" fill="#111111" />
+  <rect x="7" y="10" width="1" height="1" fill="#111111" />
+  <rect x="8" y="10" width="1" height="1" fill="#111111" />
+  <rect x="9" y="10" width="1" height="1" fill="#111111" />
+  <rect x="10" y="10" width="1" height="1" fill="#111111" />
+  <rect x="12" y="10" width="1" height="1" fill="#111111" />
+  <rect x="14" y="10" width="1" height="1" fill="#111111" />
+  <rect x="16" y="10" width="1" height="1" fill="#111111" />
+  <rect x="18" y="10" width="1" height="1" fill="#111111" />
+  <rect x="20" y="10" width="1" height="1" fill="#111111" />
+  <rect x="22" y="10" width="1" height="1" fill="#111111" />
+  <rect x="24" y="10" width="1" height="1" fill="#111111" />
+  <rect x="26" y="10" width="1" height="1" fill="#111111" />
+  <rect x="27" y="10" width="1" height="1" fill="#111111" />
+  <rect x="28" y="10" width="1" height="1" fill="#111111" />
+  <rect x="29" y="10" width="1" height="1" fill="#111111" />
+  <rect x="30" y="10" width="1" height="1" fill="#111111" />
+  <rect x="31" y="10" width="1" height="1" fill="#111111" />
+  <rect x="32" y="10" width="1" height="1" fill="#111111" />
+  <rect x="13" y="11" width="1" height="1" fill="#111111" />
+  <rect x="14" y="11" width="1" height="1" fill="#111111" />
+  <rect x="15" y="11" width="1" height="1" fill="#111111" />
+  <rect x="18" y="11" width="1" height="1" fill="#111111" />
+  <rect x="20" y="11" width="1" height="1" fill="#111111" />
+  <rect x="22" y="11" width="1" height="1" fill="#111111" />
+  <rect x="24" y="11" width="1" height="1" fill="#111111" />
+  <rect x="4" y="12" width="1" height="1" fill="#111111" />
+  <rect x="5" y="12" width="1" height="1" fill="#111111" />
+  <rect x="6" y="12" width="1" height="1" fill="#111111" />
+  <rect x="7" y="12" width="1" height="1" fill="#111111" />
+  <rect x="8" y="12" width="1" height="1" fill="#111111" />
+  <rect x="10" y="12" width="1" height="1" fill="#111111" />
+  <rect x="11" y="12" width="1" height="1" fill="#111111" />
+  <rect x="12" y="12" width="1" height="1" fill="#111111" />
+  <rect x="13" y="12" width="1" height="1" fill="#111111" />
+  <rect x="15" y="12" width="1" height="1" fill="#111111" />
+  <rect x="21" y="12" width="1" height="1" fill="#111111" />
+  <rect x="25" y="12" width="1" height="1" fill="#111111" />
+  <rect x="27" y="12" width="1" height="1" fill="#111111" />
+  <rect x="29" y="12" width="1" height="1" fill="#111111" />
+  <rect x="31" y="12" width="1" height="1" fill="#111111" />
+  <rect x="4" y="13" width="1" height="1" fill="#111111" />
+  <rect x="5" y="13" width="1" height="1" fill="#111111" />
+  <rect x="7" y="13" width="1" height="1" fill="#111111" />
+  <rect x="11" y="13" width="1" height="1" fill="#111111" />
+  <rect x="14" y="13" width="1" height="1" fill="#111111" />
+  <rect x="16" y="13" width="1" height="1" fill="#111111" />
+  <rect x="17" y="13" width="1" height="1" fill="#111111" />
+  <rect x="18" y="13" width="1" height="1" fill="#111111" />
+  <rect x="19" y="13" width="1" height="1" fill="#111111" />
+  <rect x="23" y="13" width="1" height="1" fill="#111111" />
+  <rect x="24" y="13" width="1" height="1" fill="#111111" />
+  <rect x="26" y="13" width="1" height="1" fill="#111111" />
+  <rect x="27" y="13" width="1" height="1" fill="#111111" />
+  <rect x="28" y="13" width="1" height="1" fill="#111111" />
+  <rect x="32" y="13" width="1" height="1" fill="#111111" />
+  <rect x="5" y="14" width="1" height="1" fill="#111111" />
+  <rect x="9" y="14" width="1" height="1" fill="#111111" />
+  <rect x="10" y="14" width="1" height="1" fill="#111111" />
+  <rect x="11" y="14" width="1" height="1" fill="#111111" />
+  <rect x="14" y="14" width="1" height="1" fill="#111111" />
+  <rect x="17" y="14" width="1" height="1" fill="#111111" />
+  <rect x="18" y="14" width="1" height="1" fill="#111111" />
+  <rect x="19" y="14" width="1" height="1" fill="#111111" />
+  <rect x="20" y="14" width="1" height="1" fill="#111111" />
+  <rect x="21" y="14" width="1" height="1" fill="#111111" />
+  <rect x="22" y="14" width="1" height="1" fill="#111111" />
+  <rect x="25" y="14" width="1" height="1" fill="#111111" />
+  <rect x="27" y="14" width="1" height="1" fill="#111111" />
+  <rect x="28" y="14" width="1" height="1" fill="#111111" />
+  <rect x="7" y="15" width="1" height="1" fill="#111111" />
+  <rect x="8" y="15" width="1" height="1" fill="#111111" />
+  <rect x="11" y="15" width="1" height="1" fill="#111111" />
+  <rect x="12" y="15" width="1" height="1" fill="#111111" />
+  <rect x="16" y="15" width="1" height="1" fill="#111111" />
+  <rect x="17" y="15" width="1" height="1" fill="#111111" />
+  <rect x="19" y="15" width="1" height="1" fill="#111111" />
+  <rect x="20" y="15" width="1" height="1" fill="#111111" />
+  <rect x="22" y="15" width="1" height="1" fill="#111111" />
+  <rect x="23" y="15" width="1" height="1" fill="#111111" />
+  <rect x="26" y="15" width="1" height="1" fill="#111111" />
+  <rect x="27" y="15" width="1" height="1" fill="#111111" />
+  <rect x="28" y="15" width="1" height="1" fill="#111111" />
+  <rect x="29" y="15" width="1" height="1" fill="#111111" />
+  <rect x="31" y="15" width="1" height="1" fill="#111111" />
+  <rect x="4" y="16" width="1" height="1" fill="#111111" />
+  <rect x="7" y="16" width="1" height="1" fill="#111111" />
+  <rect x="8" y="16" width="1" height="1" fill="#111111" />
+  <rect x="10" y="16" width="1" height="1" fill="#111111" />
+  <rect x="11" y="16" width="1" height="1" fill="#111111" />
+  <rect x="12" y="16" width="1" height="1" fill="#111111" />
+  <rect x="13" y="16" width="1" height="1" fill="#111111" />
+  <rect x="14" y="16" width="1" height="1" fill="#111111" />
+  <rect x="16" y="16" width="1" height="1" fill="#111111" />
+  <rect x="18" y="16" width="1" height="1" fill="#111111" />
+  <rect x="21" y="16" width="1" height="1" fill="#111111" />
+  <rect x="24" y="16" width="1" height="1" fill="#111111" />
+  <rect x="29" y="16" width="1" height="1" fill="#111111" />
+  <rect x="30" y="16" width="1" height="1" fill="#111111" />
+  <rect x="11" y="17" width="1" height="1" fill="#111111" />
+  <rect x="12" y="17" width="1" height="1" fill="#111111" />
+  <rect x="13" y="17" width="1" height="1" fill="#111111" />
+  <rect x="20" y="17" width="1" height="1" fill="#111111" />
+  <rect x="22" y="17" width="1" height="1" fill="#111111" />
+  <rect x="23" y="17" width="1" height="1" fill="#111111" />
+  <rect x="24" y="17" width="1" height="1" fill="#111111" />
+  <rect x="26" y="17" width="1" height="1" fill="#111111" />
+  <rect x="27" y="17" width="1" height="1" fill="#111111" />
+  <rect x="28" y="17" width="1" height="1" fill="#111111" />
+  <rect x="32" y="17" width="1" height="1" fill="#111111" />
+  <rect x="5" y="18" width="1" height="1" fill="#111111" />
+  <rect x="10" y="18" width="1" height="1" fill="#111111" />
+  <rect x="11" y="18" width="1" height="1" fill="#111111" />
+  <rect x="15" y="18" width="1" height="1" fill="#111111" />
+  <rect x="16" y="18" width="1" height="1" fill="#111111" />
+  <rect x="19" y="18" width="1" height="1" fill="#111111" />
+  <rect x="20" y="18" width="1" height="1" fill="#111111" />
+  <rect x="24" y="18" width="1" height="1" fill="#111111" />
+  <rect x="29" y="18" width="1" height="1" fill="#111111" />
+  <rect x="30" y="18" width="1" height="1" fill="#111111" />
+  <rect x="4" y="19" width="1" height="1" fill="#111111" />
+  <rect x="9" y="19" width="1" height="1" fill="#111111" />
+  <rect x="13" y="19" width="1" height="1" fill="#111111" />
+  <rect x="15" y="19" width="1" height="1" fill="#111111" />
+  <rect x="18" y="19" width="1" height="1" fill="#111111" />
+  <rect x="20" y="19" width="1" height="1" fill="#111111" />
+  <rect x="23" y="19" width="1" height="1" fill="#111111" />
+  <rect x="24" y="19" width="1" height="1" fill="#111111" />
+  <rect x="25" y="19" width="1" height="1" fill="#111111" />
+  <rect x="27" y="19" width="1" height="1" fill="#111111" />
+  <rect x="31" y="19" width="1" height="1" fill="#111111" />
+  <rect x="4" y="20" width="1" height="1" fill="#111111" />
+  <rect x="5" y="20" width="1" height="1" fill="#111111" />
+  <rect x="6" y="20" width="1" height="1" fill="#111111" />
+  <rect x="8" y="20" width="1" height="1" fill="#111111" />
+  <rect x="9" y="20" width="1" height="1" fill="#111111" />
+  <rect x="10" y="20" width="1" height="1" fill="#111111" />
+  <rect x="11" y="20" width="1" height="1" fill="#111111" />
+  <rect x="14" y="20" width="1" height="1" fill="#111111" />
+  <rect x="15" y="20" width="1" height="1" fill="#111111" />
+  <rect x="21" y="20" width="1" height="1" fill="#111111" />
+  <rect x="23" y="20" width="1" height="1" fill="#111111" />
+  <rect x="29" y="20" width="1" height="1" fill="#111111" />
+  <rect x="30" y="20" width="1" height="1" fill="#111111" />
+  <rect x="4" y="21" width="1" height="1" fill="#111111" />
+  <rect x="5" y="21" width="1" height="1" fill="#111111" />
+  <rect x="6" y="21" width="1" height="1" fill="#111111" />
+  <rect x="9" y="21" width="1" height="1" fill="#111111" />
+  <rect x="12" y="21" width="1" height="1" fill="#111111" />
+  <rect x="13" y="21" width="1" height="1" fill="#111111" />
+  <rect x="14" y="21" width="1" height="1" fill="#111111" />
+  <rect x="16" y="21" width="1" height="1" fill="#111111" />
+  <rect x="17" y="21" width="1" height="1" fill="#111111" />
+  <rect x="18" y="21" width="1" height="1" fill="#111111" />
+  <rect x="20" y="21" width="1" height="1" fill="#111111" />
+  <rect x="21" y="21" width="1" height="1" fill="#111111" />
+  <rect x="22" y="21" width="1" height="1" fill="#111111" />
+  <rect x="23" y="21" width="1" height="1" fill="#111111" />
+  <rect x="24" y="21" width="1" height="1" fill="#111111" />
+  <rect x="26" y="21" width="1" height="1" fill="#111111" />
+  <rect x="27" y="21" width="1" height="1" fill="#111111" />
+  <rect x="28" y="21" width="1" height="1" fill="#111111" />
+  <rect x="30" y="21" width="1" height="1" fill="#111111" />
+  <rect x="32" y="21" width="1" height="1" fill="#111111" />
+  <rect x="4" y="22" width="1" height="1" fill="#111111" />
+  <rect x="6" y="22" width="1" height="1" fill="#111111" />
+  <rect x="10" y="22" width="1" height="1" fill="#111111" />
+  <rect x="11" y="22" width="1" height="1" fill="#111111" />
+  <rect x="12" y="22" width="1" height="1" fill="#111111" />
+  <rect x="14" y="22" width="1" height="1" fill="#111111" />
+  <rect x="17" y="22" width="1" height="1" fill="#111111" />
+  <rect x="18" y="22" width="1" height="1" fill="#111111" />
+  <rect x="19" y="22" width="1" height="1" fill="#111111" />
+  <rect x="20" y="22" width="1" height="1" fill="#111111" />
+  <rect x="21" y="22" width="1" height="1" fill="#111111" />
+  <rect x="25" y="22" width="1" height="1" fill="#111111" />
+  <rect x="26" y="22" width="1" height="1" fill="#111111" />
+  <rect x="27" y="22" width="1" height="1" fill="#111111" />
+  <rect x="30" y="22" width="1" height="1" fill="#111111" />
+  <rect x="4" y="23" width="1" height="1" fill="#111111" />
+  <rect x="13" y="23" width="1" height="1" fill="#111111" />
+  <rect x="14" y="23" width="1" height="1" fill="#111111" />
+  <rect x="16" y="23" width="1" height="1" fill="#111111" />
+  <rect x="17" y="23" width="1" height="1" fill="#111111" />
+  <rect x="22" y="23" width="1" height="1" fill="#111111" />
+  <rect x="24" y="23" width="1" height="1" fill="#111111" />
+  <rect x="27" y="23" width="1" height="1" fill="#111111" />
+  <rect x="31" y="23" width="1" height="1" fill="#111111" />
+  <rect x="4" y="24" width="1" height="1" fill="#111111" />
+  <rect x="7" y="24" width="1" height="1" fill="#111111" />
+  <rect x="9" y="24" width="1" height="1" fill="#111111" />
+  <rect x="10" y="24" width="1" height="1" fill="#111111" />
+  <rect x="16" y="24" width="1" height="1" fill="#111111" />
+  <rect x="18" y="24" width="1" height="1" fill="#111111" />
+  <rect x="19" y="24" width="1" height="1" fill="#111111" />
+  <rect x="21" y="24" width="1" height="1" fill="#111111" />
+  <rect x="24" y="24" width="1" height="1" fill="#111111" />
+  <rect x="25" y="24" width="1" height="1" fill="#111111" />
+  <rect x="26" y="24" width="1" height="1" fill="#111111" />
+  <rect x="27" y="24" width="1" height="1" fill="#111111" />
+  <rect x="28" y="24" width="1" height="1" fill="#111111" />
+  <rect x="30" y="24" width="1" height="1" fill="#111111" />
+  <rect x="31" y="24" width="1" height="1" fill="#111111" />
+  <rect x="32" y="24" width="1" height="1" fill="#111111" />
+  <rect x="12" y="25" width="1" height="1" fill="#111111" />
+  <rect x="14" y="25" width="1" height="1" fill="#111111" />
+  <rect x="20" y="25" width="1" height="1" fill="#111111" />
+  <rect x="22" y="25" width="1" height="1" fill="#111111" />
+  <rect x="23" y="25" width="1" height="1" fill="#111111" />
+  <rect x="24" y="25" width="1" height="1" fill="#111111" />
+  <rect x="28" y="25" width="1" height="1" fill="#111111" />
+  <rect x="29" y="25" width="1" height="1" fill="#111111" />
+  <rect x="30" y="25" width="1" height="1" fill="#111111" />
+  <rect x="31" y="25" width="1" height="1" fill="#111111" />
+  <rect x="32" y="25" width="1" height="1" fill="#111111" />
+  <rect x="4" y="26" width="1" height="1" fill="#111111" />
+  <rect x="5" y="26" width="1" height="1" fill="#111111" />
+  <rect x="6" y="26" width="1" height="1" fill="#111111" />
+  <rect x="7" y="26" width="1" height="1" fill="#111111" />
+  <rect x="8" y="26" width="1" height="1" fill="#111111" />
+  <rect x="9" y="26" width="1" height="1" fill="#111111" />
+  <rect x="10" y="26" width="1" height="1" fill="#111111" />
+  <rect x="12" y="26" width="1" height="1" fill="#111111" />
+  <rect x="14" y="26" width="1" height="1" fill="#111111" />
+  <rect x="15" y="26" width="1" height="1" fill="#111111" />
+  <rect x="16" y="26" width="1" height="1" fill="#111111" />
+  <rect x="19" y="26" width="1" height="1" fill="#111111" />
+  <rect x="23" y="26" width="1" height="1" fill="#111111" />
+  <rect x="24" y="26" width="1" height="1" fill="#111111" />
+  <rect x="26" y="26" width="1" height="1" fill="#111111" />
+  <rect x="28" y="26" width="1" height="1" fill="#111111" />
+  <rect x="29" y="26" width="1" height="1" fill="#111111" />
+  <rect x="30" y="26" width="1" height="1" fill="#111111" />
+  <rect x="4" y="27" width="1" height="1" fill="#111111" />
+  <rect x="10" y="27" width="1" height="1" fill="#111111" />
+  <rect x="13" y="27" width="1" height="1" fill="#111111" />
+  <rect x="15" y="27" width="1" height="1" fill="#111111" />
+  <rect x="18" y="27" width="1" height="1" fill="#111111" />
+  <rect x="20" y="27" width="1" height="1" fill="#111111" />
+  <rect x="22" y="27" width="1" height="1" fill="#111111" />
+  <rect x="23" y="27" width="1" height="1" fill="#111111" />
+  <rect x="24" y="27" width="1" height="1" fill="#111111" />
+  <rect x="28" y="27" width="1" height="1" fill="#111111" />
+  <rect x="31" y="27" width="1" height="1" fill="#111111" />
+  <rect x="32" y="27" width="1" height="1" fill="#111111" />
+  <rect x="4" y="28" width="1" height="1" fill="#111111" />
+  <rect x="6" y="28" width="1" height="1" fill="#111111" />
+  <rect x="7" y="28" width="1" height="1" fill="#111111" />
+  <rect x="8" y="28" width="1" height="1" fill="#111111" />
+  <rect x="10" y="28" width="1" height="1" fill="#111111" />
+  <rect x="12" y="28" width="1" height="1" fill="#111111" />
+  <rect x="14" y="28" width="1" height="1" fill="#111111" />
+  <rect x="15" y="28" width="1" height="1" fill="#111111" />
+  <rect x="21" y="28" width="1" height="1" fill="#111111" />
+  <rect x="24" y="28" width="1" height="1" fill="#111111" />
+  <rect x="25" y="28" width="1" height="1" fill="#111111" />
+  <rect x="26" y="28" width="1" height="1" fill="#111111" />
+  <rect x="27" y="28" width="1" height="1" fill="#111111" />
+  <rect x="28" y="28" width="1" height="1" fill="#111111" />
+  <rect x="30" y="28" width="1" height="1" fill="#111111" />
+  <rect x="31" y="28" width="1" height="1" fill="#111111" />
+  <rect x="4" y="29" width="1" height="1" fill="#111111" />
+  <rect x="6" y="29" width="1" height="1" fill="#111111" />
+  <rect x="7" y="29" width="1" height="1" fill="#111111" />
+  <rect x="8" y="29" width="1" height="1" fill="#111111" />
+  <rect x="10" y="29" width="1" height="1" fill="#111111" />
+  <rect x="12" y="29" width="1" height="1" fill="#111111" />
+  <rect x="13" y="29" width="1" height="1" fill="#111111" />
+  <rect x="14" y="29" width="1" height="1" fill="#111111" />
+  <rect x="16" y="29" width="1" height="1" fill="#111111" />
+  <rect x="17" y="29" width="1" height="1" fill="#111111" />
+  <rect x="18" y="29" width="1" height="1" fill="#111111" />
+  <rect x="22" y="29" width="1" height="1" fill="#111111" />
+  <rect x="23" y="29" width="1" height="1" fill="#111111" />
+  <rect x="24" y="29" width="1" height="1" fill="#111111" />
+  <rect x="25" y="29" width="1" height="1" fill="#111111" />
+  <rect x="29" y="29" width="1" height="1" fill="#111111" />
+  <rect x="30" y="29" width="1" height="1" fill="#111111" />
+  <rect x="31" y="29" width="1" height="1" fill="#111111" />
+  <rect x="32" y="29" width="1" height="1" fill="#111111" />
+  <rect x="4" y="30" width="1" height="1" fill="#111111" />
+  <rect x="6" y="30" width="1" height="1" fill="#111111" />
+  <rect x="7" y="30" width="1" height="1" fill="#111111" />
+  <rect x="8" y="30" width="1" height="1" fill="#111111" />
+  <rect x="10" y="30" width="1" height="1" fill="#111111" />
+  <rect x="12" y="30" width="1" height="1" fill="#111111" />
+  <rect x="13" y="30" width="1" height="1" fill="#111111" />
+  <rect x="14" y="30" width="1" height="1" fill="#111111" />
+  <rect x="17" y="30" width="1" height="1" fill="#111111" />
+  <rect x="18" y="30" width="1" height="1" fill="#111111" />
+  <rect x="19" y="30" width="1" height="1" fill="#111111" />
+  <rect x="25" y="30" width="1" height="1" fill="#111111" />
+  <rect x="26" y="30" width="1" height="1" fill="#111111" />
+  <rect x="27" y="30" width="1" height="1" fill="#111111" />
+  <rect x="28" y="30" width="1" height="1" fill="#111111" />
+  <rect x="29" y="30" width="1" height="1" fill="#111111" />
+  <rect x="30" y="30" width="1" height="1" fill="#111111" />
+  <rect x="31" y="30" width="1" height="1" fill="#111111" />
+  <rect x="4" y="31" width="1" height="1" fill="#111111" />
+  <rect x="10" y="31" width="1" height="1" fill="#111111" />
+  <rect x="12" y="31" width="1" height="1" fill="#111111" />
+  <rect x="13" y="31" width="1" height="1" fill="#111111" />
+  <rect x="16" y="31" width="1" height="1" fill="#111111" />
+  <rect x="17" y="31" width="1" height="1" fill="#111111" />
+  <rect x="23" y="31" width="1" height="1" fill="#111111" />
+  <rect x="24" y="31" width="1" height="1" fill="#111111" />
+  <rect x="26" y="31" width="1" height="1" fill="#111111" />
+  <rect x="28" y="31" width="1" height="1" fill="#111111" />
+  <rect x="29" y="31" width="1" height="1" fill="#111111" />
+  <rect x="31" y="31" width="1" height="1" fill="#111111" />
+  <rect x="4" y="32" width="1" height="1" fill="#111111" />
+  <rect x="5" y="32" width="1" height="1" fill="#111111" />
+  <rect x="6" y="32" width="1" height="1" fill="#111111" />
+  <rect x="7" y="32" width="1" height="1" fill="#111111" />
+  <rect x="8" y="32" width="1" height="1" fill="#111111" />
+  <rect x="9" y="32" width="1" height="1" fill="#111111" />
+  <rect x="10" y="32" width="1" height="1" fill="#111111" />
+  <rect x="12" y="32" width="1" height="1" fill="#111111" />
+  <rect x="14" y="32" width="1" height="1" fill="#111111" />
+  <rect x="16" y="32" width="1" height="1" fill="#111111" />
+  <rect x="18" y="32" width="1" height="1" fill="#111111" />
+  <rect x="19" y="32" width="1" height="1" fill="#111111" />
+  <rect x="20" y="32" width="1" height="1" fill="#111111" />
+  <rect x="21" y="32" width="1" height="1" fill="#111111" />
+  <rect x="23" y="32" width="1" height="1" fill="#111111" />
+  <rect x="30" y="32" width="1" height="1" fill="#111111" />
+</svg>
+        </div>
+      </div>
+
+      <h2 class="qr-instruction-title">
+        Take what you need. Complete your payment. Keep it honest.
+      </h2>
+      <div class="qr-url-badge" id="poster-url-badge">
+        https://honesty-store-2.onrender.com
+      </div>
+    </section>
+
+    <!-- 3. INFORMATION SECTION (5 Minimal Monochrome Line Icons) -->
+    <section class="info-features-section">
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon-circle">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+  <polyline points="9 12 11 14 15 10"/>
+</svg>
+          </div>
+          <span class="feature-label">SAFE PAYMENTS</span>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-circle">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+</svg>
+          </div>
+          <span class="feature-label">BUILD TRUST</span>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-circle">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+  <line x1="12" y1="22.08" x2="12" y2="12"/>
+</svg>
+          </div>
+          <span class="feature-label">REDUCE WASTE</span>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-circle">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+  <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+</svg>
+          </div>
+          <span class="feature-label">SUPPORT STUDENTS</span>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-circle">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+</svg>
+          </div>
+          <span class="feature-label">STRONGER COMMUNITY</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. BRAND MESSAGE: RESTRAINED YELLOW ACCENT BANNER -->
+    <section class="brand-accent-banner">
+      <div class="banner-statement">
+        Honesty Creates a Better Tomorrow.
+      </div>
+    </section>
+
+    <!-- 5. FOOTER: SOPHISTICATED BLACK FOOTER -->
+    <footer class="poster-footer">
+      <div class="footer-text">
+        HONESTY &bull; TRUST &bull; COMMUNITY
+      </div>
+    </footer>
+
+  </main>
+
+</body>
+</html>

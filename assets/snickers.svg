@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" rx="24" fill="#fdf2f8" />
+  <circle cx="100" cy="90" r="56" fill="#fce7f3" />
+  <!-- Snickers bar shape -->
+  <rect x="50" y="66" width="100" height="46" rx="8" fill="#451a03" />
+  <rect x="54" y="70" width="92" height="38" rx="6" fill="#78350f" />
+  <text x="100" y="96" font-family="system-ui, Impact, sans-serif" font-size="14" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="1.5">SNICKERS</text>
+  <path d="M58 74 L142 74" stroke="#dc2626" stroke-width="2" />
+  <path d="M58 104 L142 104" stroke="#dc2626" stroke-width="2" />
+  <!-- Text Label -->
+  <text x="100" y="152" font-family="system-ui, sans-serif" font-size="13" font-weight="800" fill="#78350f" text-anchor="middle">SNICKERS BAR</text>
+  <text x="100" y="168" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e" text-anchor="middle">Peanuts &amp; Caramel</text>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" rx="24" fill="#eff6ff" />
+  <circle cx="100" cy="90" r="56" fill="#bfdbfe" />
+  <!-- Chocolate Wafer Box -->
+  <rect x="52" y="60" width="96" height="58" rx="8" fill="#1e3a8a" />
+  <rect x="56" y="64" width="88" height="50" rx="6" fill="#2563eb" />
+  <path d="M60 76 L140 76" stroke="#fbbf24" stroke-width="4" stroke-dasharray="8 4" />
+  <text x="100" y="98" font-family="system-ui, sans-serif" font-size="16" font-weight="900" fill="#fde047" text-anchor="middle" letter-spacing="1">MUNCH</text>
+  <rect x="80" y="103" width="40" height="7" rx="3" fill="#fbbf24" />
+  <!-- Text Label -->
+  <text x="100" y="152" font-family="system-ui, sans-serif" font-size="13" font-weight="800" fill="#1e3a8a" text-anchor="middle">NESTLE MUNCH</text>
+  <text x="100" y="168" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#3b82f6" text-anchor="middle">Crunchy Chocolate Box</text>
+</svg>

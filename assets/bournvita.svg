@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" rx="24" fill="#fff7ed" />
+  <circle cx="100" cy="90" r="56" fill="#ffedd5" />
+  <!-- Biscuit shape -->
+  <rect x="54" y="62" width="92" height="56" rx="10" fill="#c2410c" />
+  <rect x="58" y="66" width="84" height="48" rx="8" fill="#ea580c" />
+  <circle cx="76" cy="80" r="3" fill="#fff" opacity="0.8" />
+  <circle cx="100" cy="80" r="3" fill="#fff" opacity="0.8" />
+  <circle cx="124" cy="80" r="3" fill="#fff" opacity="0.8" />
+  <circle cx="76" cy="100" r="3" fill="#fff" opacity="0.8" />
+  <circle cx="100" cy="100" r="3" fill="#fff" opacity="0.8" />
+  <circle cx="124" cy="100" r="3" fill="#fff" opacity="0.8" />
+  <text x="100" y="93" font-family="system-ui, sans-serif" font-size="10" font-weight="900" fill="#ffffff" text-anchor="middle">BOURNVITA</text>
+  <!-- Text Label -->
+  <text x="100" y="152" font-family="system-ui, sans-serif" font-size="13" font-weight="800" fill="#9a3412" text-anchor="middle">BOURNVITA BISCUITS</text>
+  <text x="100" y="168" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#c2410c" text-anchor="middle">Malted Chocolate Treat</text>
+</svg>
